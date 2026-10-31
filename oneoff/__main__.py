@@ -18,11 +18,15 @@ from . import spec as specmod
 
 
 def cmd_check(a) -> int:
+    from .bgm import pick_mood
+
     s = specmod.load(Path(a.folder))
     warns = specmod.warnings(s)
     print(f"OK: {s.id} — 장면 {len(s.scenes)}개, 플랫폼 {','.join(s.platforms)}")
     print(f"  캡션 {len(s.caption)}자 / 해시태그 {len(specmod.hashtags(s.caption))}개 / "
           f"스레드 {len(s.threads)}자 / 제목 {len(s.title)}자")
+    auto = " (원고 글자로 자동 선택)" if s.music == specmod.MUSIC_AUTO else ""
+    print(f"  배경음악 {pick_mood(s)}{auto}")
     for w in warns:
         print(f"  경고: {w}")
     return 0

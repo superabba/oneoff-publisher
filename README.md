@@ -30,11 +30,12 @@ oneoff/            코드
   spec.py          spec.json 읽기·검사
   render.py        장면 그리기 (블록 배치, 1080x1920 영상 장면 / 1080x1350 슬라이드)
   video.py         등장 애니메이션·줌·진행 바 → 장면별 mp4 → 이어 붙이기 → 배경음악
+  bgm.py           분위기별 배경음악 (잔잔·따뜻·경쾌·신나는·주의), auto면 원고 단어로 고름
   publish.py       게시 (이미 올린 플랫폼은 건너뜀)
   publishers.py    인스타·스레드 API   ┐
   youtube.py       유튜브 업로드        ├ 카드뉴스봇에서 그대로 복사
   hosting.py       공개 URL 만들기      │
-  music.py         배경음악 합성        ┘
+  music.py         잔잔한 배경음악 합성  ┘
 fonts/             Pretendard (OFL)
 examples/          예시 게시물 (조이모바일 알뜰폰 특가)
 skills/            채팅 Claude가 따르는 절차 (SKILL.md)
@@ -72,7 +73,7 @@ GitHub에서: Actions → **일회성 발행** → Run workflow → `post`에 �
   "youtube_privacy": "public",           // 선택. 비우면 YOUTUBE_PRIVACY 시크릿, 그것도 없으면 public
   "handle": "@economypub",
   "theme": {"bg": "#FFD60A", "ink": "#111111", "accent": "#E22028", "card": "#FFFFFF"},
-  "music": "auto",                       // auto=합성 배경음악, none=무음
+  "music": "auto",                       // 배경음악 분위기 (아래), none=무음
   "scenes": [
     {"seconds": 4, "blocks": [ ... ]}     // seconds 생략하면 글자 수로 자동 (2.8~4.6초)
   ]
@@ -92,6 +93,21 @@ GitHub에서: Actions → **일회성 발행** → Run workflow → `post`에 �
 | `spacer` | `{"type":"spacer","height":40}` | 빈 공간 |
 
 글자가 넘치면 자동으로 줄이고, 화면이 비어 보이면 키운다 (블록 전체 비율 유지).
+
+배경음악 (`music`) — 매번 직접 합성하므로 저작권 걱정이 없고, 게시물 id에 따라 키·코드 진행·빠르기가 조금씩 달라진다.
+분위기가 달라도 체감 음량은 약 −16 LUFS로 맞춰 둔다.
+
+| 값 | 분위기 | 어울리는 주제 |
+|---|---|---|
+| `calm` | 잔잔 — 패드 + 피아노풍 아르페지오 (카드뉴스봇과 같은 음악) | 정보 정리, 일반 |
+| `warm` | 따뜻 — 느긋한 아르페지오 + 셰이커 | 지원금·환급·생활 정보 |
+| `bright` | 경쾌 — 통통 튀는 플럭 + 가벼운 드럼 | 특가·할인·이벤트·혜택 |
+| `upbeat` | 신나는 — 네 박 킥 + 엇박 화음 | 선착순·마감 임박·역대급 |
+| `tense` | 주의 — 단조 + 일정하게 뛰는 베이스 | 사기·피싱·함정·손해 |
+| `auto` | 제목·장면 글자의 단어로 위에서 고름 (걸리는 단어 없으면 `calm`) | 기본값 |
+| `none` | 무음 | |
+
+`python -m oneoff check`가 어떤 분위기로 정해졌는지 보여 준다.
 
 ## 처음 한 번 설정
 

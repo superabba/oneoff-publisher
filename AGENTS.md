@@ -26,7 +26,7 @@
 |---|---|
 | Uplika 워크스페이스 (경제주막) | `ws_3a45040ee5856407` (economypub) |
 | 네이버 블로그 | `conn_4229412d79bc99ce`, 경제 카테고리 `categoryId "2"` |
-| 네이버 클립 (경제주막) | **아직 Uplika에 연결 안 됨** — 연결되면 `list_accounts`로 id 확인 |
+| 네이버 클립 (경제주막) | `conn_efdce3d2f5b04bc8` (handle `economypub`, 프로필 이름 '경제주모'), 특가·할인은 `categoryId "163"` (쇼핑 › 할인정보) |
 | 인스타·스레드·유튜브 (이 저장소 게시용) | GitHub Secrets (카드뉴스봇 값 복사) |
 | 네이버 발행 브라우저 | 사용자 PC의 Edge + Uplika 확장. 꺼져 있으면 대기열(최대 7일) |
 
@@ -40,6 +40,7 @@
 | `oneoff/spec.py` | `spec.json` 읽기·검사 (글자 수, 사진 존재, 블록 형식) |
 | `oneoff/render.py` | 블록(label·headline·text·photo·card·pill·spacer) 배치 → 1080x1920 장면 / 1080x1350 슬라이드 |
 | `oneoff/video.py` | 등장 애니메이션·줌·진행 바 → 장면별 mp4 → concat → 배경음악 |
+| `oneoff/bgm.py` | 분위기별 배경음악 합성 (calm·warm·bright·upbeat·tense, auto는 원고 단어로 선택). calm은 `music.py` 그대로 |
 | `oneoff/publish.py` | 게시 (DB 없이 `published.json`·`log.jsonl`에 기록) |
 | `oneoff/publishers.py`, `youtube.py`, `hosting.py`, `music.py` | 카드뉴스봇에서 **그대로 복사** (원본 `my-site/cardnews-bot/cardbot/`) |
 | `.github/workflows/publish.yml` | 수동 실행: `post`, `action`(publish/render/render-publish), `platforms` |
@@ -48,6 +49,7 @@
 - 복사해 온 4개 파일은 카드뉴스봇 쪽에서 API 대응이 바뀌면 같이 맞춘다.
 - 렌더 스타일을 바꾸면 `examples/joym-5500`으로 `preview`를 다시 만들어 보고 `pytest`를 돌린다.
 - 영상: 30fps, 장면별 mp4 → concat `-c copy` → 음원 `-c:v copy`. 장면 파일은 `.part.mp4`로 쓰고 성공 시 이름 변경.
+- 배경음악 분위기를 추가·수정하면 ffmpeg `ebur128`로 재서 다른 분위기와 체감 음량(약 −16 LUFS)을 맞춘다 (`bgm.py`의 `level`).
 - 커밋 메시지·주석·문서는 한국어.
 
 ## 이 세션 환경에서 막혀 있는 것 (클라우드 Claude 기준)

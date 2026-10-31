@@ -2,8 +2,10 @@ import json
 import shutil
 from pathlib import Path
 
+import numpy as np
 import pytest
 
+from oneoff import bgm
 from oneoff import spec as specmod
 from oneoff.publish import publish
 from oneoff.publishers import PublishError, PublishResult
@@ -38,6 +40,33 @@ def test_missing_photo_rejected(post):
     (post / "promo.jpg").unlink()
     with pytest.raises(specmod.SpecError):
         specmod.load(post)
+
+
+def test_bad_music_rejected(post):
+    raw = json.loads((post / "spec.json").read_text(encoding="utf-8"))
+    raw["music"] = "jazz"
+    (post / "spec.json").write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    with pytest.raises(specmod.SpecError):
+        specmod.load(post)
+
+
+def test_auto_music_follows_text(post):
+    s = specmod.load(post)
+    assert s.music == "auto" and bgm.pick_mood(s) == "bright"  # 특가·한정
+    s.title, s.scenes = "보이스피싱 주의", [specmod.Scene([{"type": "headline", "text": "이런 문자는 사기"}])]
+    assert bgm.pick_mood(s) == "tense"
+    s.title, s.scenes = "오늘 날씨", [specmod.Scene([{"type": "headline", "text": "맑고 선선해요"}])]
+    assert bgm.pick_mood(s) == "calm"
+    s.music = "warm"
+    assert bgm.pick_mood(s) == "warm"
+
+
+@pytest.mark.parametrize("mood", specmod.MUSIC_MOODS)
+def test_music_moods(mood):
+    a = bgm.compose(4, "seed", mood)
+    assert a.shape == (int(4.5 * bgm.SR), 2)
+    assert np.isfinite(a).all() and 0.3 < np.abs(a).max() <= 0.75
+    assert np.array_equal(a, bgm.compose(4, "seed", mood))  # 같은 게시물이면 같은 곡
 
 
 @pytest.mark.parametrize("cv", [VIDEO, SLIDE])

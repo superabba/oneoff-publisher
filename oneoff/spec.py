@@ -21,6 +21,9 @@ DEFAULT_THEME = {
     "card": "#FFFFFF",  # 흰 카드
 }
 
+MUSIC_AUTO, MUSIC_OFF = "auto", "none"
+MUSIC_MOODS = ("calm", "warm", "bright", "upbeat", "tense")  # 잔잔·따뜻·경쾌·신나는·주의 (bgm.py)
+
 IG_CAPTION_MAX = 2200
 IG_HASHTAG_MAX = 30
 THREADS_MAX = 500
@@ -59,7 +62,7 @@ class Spec:
     platforms: list[str] = field(default_factory=lambda: list(PLATFORMS))
     theme: dict = field(default_factory=lambda: dict(DEFAULT_THEME))
     handle: str = "@economypub"
-    music: str = "auto"
+    music: str = MUSIC_AUTO
     youtube_privacy: str = ""  # 비우면 YOUTUBE_PRIVACY 시크릿/변수(없으면 public)
 
     def color(self, name: str) -> tuple[int, int, int]:
@@ -121,10 +124,16 @@ def load(folder: Path) -> Spec:
     if privacy and privacy not in {"public", "unlisted", "private"}:
         raise SpecError("youtube_privacy는 public/unlisted/private 중 하나")
 
+    music = str(raw.get("music", MUSIC_AUTO)).strip().lower()
+    if music in {"off", "silent", "false"}:
+        music = MUSIC_OFF
+    if music not in {MUSIC_AUTO, MUSIC_OFF, *MUSIC_MOODS}:
+        raise SpecError(f"music는 {MUSIC_AUTO}/{MUSIC_OFF}/{'/'.join(MUSIC_MOODS)} 중 하나")
+
     return Spec(
         id=raw["id"], title=raw["title"].strip(), caption=raw["caption"].strip(),
         threads=raw["threads"].strip(), scenes=scenes, folder=folder, platforms=platforms,
-        theme=theme, handle=raw.get("handle", "@economypub"), music=raw.get("music", "auto"),
+        theme=theme, handle=raw.get("handle", "@economypub"), music=music,
         youtube_privacy=privacy,
     )
 

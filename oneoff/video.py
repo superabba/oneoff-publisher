@@ -4,7 +4,7 @@
 - 장면마다 블록이 위에서부터 차례로 튀어 오르듯 등장 (살짝 커졌다가 제자리)
 - 등장 뒤에는 내용 전체가 아주 천천히 다가오는 줌 (정지 화면처럼 보이지 않게)
 - 위쪽에 스토리형 진행 바 (몇 장 남았는지 보여 끝까지 보게 함)
-- 배경음악은 카드뉴스봇과 같은 합성 음원 (저작권 걱정 없음)
+- 배경음악은 원고 분위기(잔잔·따뜻·경쾌·신나는·주의)에 맞춰 합성 (bgm.py, 저작권 걱정 없음)
 
 인코딩: 장면마다 mp4 하나 → concat(-c copy) → 음원 합치기(-c:v copy).
 장면 파일은 임시 이름으로 쓰고 ffmpeg가 성공했을 때만 이름을 바꾼다.
@@ -19,9 +19,9 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-from .music import write_track
+from .bgm import audio_filter, pick_mood, write_track
 from .render import VIDEO, W, Placed, background, draw_handle, layout
-from .spec import Spec
+from .spec import MUSIC_AUTO, MUSIC_OFF, Spec
 
 log = logging.getLogger(__name__)
 
@@ -181,15 +181,16 @@ def render_video(spec: Spec, out_dir: Path) -> tuple[Path, Path, float]:
 
     out = out_dir / "reel.mp4"
     tmp = out_dir / "reel.part.mp4"
-    fade = f"afade=t=out:st={max(0.0, total - 1.8):.2f}:d=1.8"
-    if str(spec.music).lower() in {"none", "off", "silent", "false"}:
+    mood = pick_mood(spec)
+    if mood == MUSIC_OFF:
         cmd = [ffmpeg(), "-y", "-loglevel", "error", "-i", str(silent),
                "-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100"]
         af = []
     else:
-        wav = write_track(work / "music.wav", total + 1, spec.id)
+        wav = write_track(work / "music.wav", total + 1, spec.id, mood)
         cmd = [ffmpeg(), "-y", "-loglevel", "error", "-i", str(silent), "-i", str(wav)]
-        af = ["-af", f"lowpass=f=6000,aecho=0.8:0.5:70|150:0.22|0.12,afade=t=in:d=1.0,{fade},volume=2.0"]
+        af = ["-af", audio_filter(mood, total)]
+        log.info("배경음악: %s%s", mood, " (원고 글자로 자동 선택)" if spec.music == MUSIC_AUTO else "")
     cmd += ["-map", "0:v", "-map", "1:a", *af, "-shortest", "-c:v", "copy",
             "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", str(tmp)]
     _run(cmd)
