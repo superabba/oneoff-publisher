@@ -26,7 +26,7 @@
 |---|---|
 | Uplika 워크스페이스 (경제주막) | `ws_3a45040ee5856407` (economypub) |
 | 네이버 블로그 | `conn_4229412d79bc99ce`, 경제 카테고리 `categoryId "2"` |
-| 네이버 클립 (경제주막) | `conn_efdce3d2f5b04bc8` (handle `economypub`, 프로필 이름 '경제주모'), 특가·할인은 `categoryId "163"` (쇼핑 › 할인정보) |
+| 네이버 클립 (경제주막) | `conn_efdce3d2f5b04bc8` (handle `economypub`, 프로필 이름 '경제주모' — 오타 아님), 특가·할인은 `categoryId "163"` (쇼핑 › 할인정보) |
 | 인스타·스레드·유튜브 (이 저장소 게시용) | GitHub Secrets (카드뉴스봇 값 복사) |
 | 네이버 발행 브라우저 | 사용자 PC의 Edge + Uplika 확장. 꺼져 있으면 대기열(최대 7일) |
 
