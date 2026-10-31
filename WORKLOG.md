@@ -39,7 +39,7 @@
 ## 4. 설정 변경
 - 대가성(광고·협찬)은 기본 **없음**으로 보고 묻지 않음 (사용자가 있을 때만 말해 줌). 스킬·AGENTS.md에 반영.
 
-## 5. oneoff-publisher 저장소 — 코드 완성, 저장소 생성 대기
+## 5. oneoff-publisher 저장소 — 저장소 생성·시크릿 복사·테스트 렌더 완료, 첫 실제 게시 대기
 **목적**: 일회성 주제를 카드뉴스봇과 완전히 분리해서 발행. 카드뉴스봇의 '오늘 이미 게시' 판단에 끼어들 일이 없다.
 
 **만든 것**
@@ -57,25 +57,40 @@
   수동 실행 + 매달 1일 09:50(토큰 갱신 09:20의 30분 뒤). 권한이 없으면 경고만 남기고 실패하지 않음.
   카드뉴스봇 워크플로·코드·`cardbot-data`는 건드리지 않음.
 
+**저장소 설정 (사용자 PC의 Claude Code, 20:14~20:24)**
+- `superabba/oneoff-publisher` 공개 저장소 생성, `main` push.
+- 고아 브랜치 `data` 생성: README.md + `.gitignore`(`posts/*/_scenes/`)만. 작업 폴더의 추적 안 하는 파일
+  (`SKILL.md`, `oneoff-publisher.zip`)이 섞이지 않게 임시 worktree에서 만들고 지움.
+- 이 PC에는 git 전역 사용자 설정이 없음 → 커밋할 때 `-c user.name=... -c user.email=...`로 기존 커밋과 같은 작성자(superabba)를 지정.
+- 시크릿 동기화 1차(20:14): 복사 0개, 9개 모두 `HTTP 403: Resource not accessible by personal access token`.
+  `CARDBOT_ADMIN_TOKEN`은 fine-grained PAT **`cardbot-admin`**(만료 2027-10-09)이고 저장소 목록에 `my-site`만 있었음.
+  → 사용자가 'Access on superabba' Edit에서 `oneoff-publisher` 추가.
+- 시크릿 동기화 2차(20:23): **9개 모두 복사 완료**(IG·THREADS·YOUTUBE 7개 + `YOUTUBE_CHANNEL_ID`·`YOUTUBE_PRIVACY`),
+  `gh secret list`로 저장소에 들어간 것 확인.
+- 테스트 렌더(게시 없음, 20:15): `examples/joym-5500` → data `posts/20261031-joym-5500/`, `publish.yml` `action=render` 실행 #1 **성공**.
+  6장면 27.5초, '게시' 단계 건너뜀, 결과물 8개가 data 브랜치에 자동 커밋, 아티팩트 `oneoff-20261031-joym-5500-1`(약 4.9MB, 11/14까지).
+  Actions에서 만든 미리보기 jpg가 로컬에서 만든 것과 바이트 단위로 같음.
+
 **막힌 것 (클라우드 Claude 세션 제약)**
-- GitHub 저장소 생성 API 차단 → 사용자가 Claude Code(로컬)에서 생성.
-- Actions 시크릿·변수 API 차단 → 동기화 워크플로로 우회.
+- GitHub 저장소 생성 API 차단 → 사용자 PC의 Claude Code에서 생성함.
+- Actions 시크릿·변수 API 차단 → 동기화 워크플로로 우회 (동작 확인).
 
 **확인 안 된 것**
 - 인스타 장기 토큰을 갱신하면 이전 토큰이 바로 무효가 되는지 → 동기화를 매달 갱신 직후에 돌려 대비.
-- `CARDBOT_ADMIN_TOKEN`이 fine-grained인지 classic인지 (classic + repo 권한이면 저장소 추가 없이 될 수도 있음).
-- 실제 게시까지 한 번에 도는지(end-to-end)는 저장소 생성·시크릿 복사 뒤 첫 실행에서 확인해야 함.
+- 실제 게시까지 한 번에 도는지(end-to-end) → 렌더까지만 확인. 다음 일회성 주제의 첫 게시에서 확인해야 함.
 
 ---
 
 ## 남은 일
-- [ ] (사용자) Claude Code에서 저장소 생성 + 코드 push — 아래 프롬프트
-- [ ] (사용자) `CARDBOT_ADMIN_TOKEN`(PAT)의 저장소 목록에 `oneoff-publisher` 추가, Secrets 읽기·쓰기
-- [ ] 시크릿 동기화 실행 → 테스트 렌더(게시 없이) → 다음 일회성 주제에서 첫 실제 게시
+- [x] (사용자) Claude Code에서 저장소 생성 + 코드 push — 아래 프롬프트
+- [x] (사용자) `CARDBOT_ADMIN_TOKEN`(PAT `cardbot-admin`)의 저장소 목록에 `oneoff-publisher` 추가
+- [x] 시크릿 동기화 실행(9개 복사) → 테스트 렌더(게시 없이) 성공
+- [ ] 다음 일회성 주제에서 첫 실제 게시 (end-to-end 확인)
+- [ ] (사용자) 2027-10-09 전에 `cardbot-admin` 토큰 만료 연장 — 만료되면 시크릿 동기화가 멈춤
 - [ ] (사용자) 슈퍼아빠 클립(스노우볼23)의 조이모바일 영상 삭제 — clipcreators.naver.com
 - [ ] (사용자) Uplika economypub 워크스페이스에 네이버 클립 연결 → Claude가 조이모바일 영상 발행
 
-## Claude Code용 저장소 생성 프롬프트
+## Claude Code용 저장소 생성 프롬프트 (2026-10-31 실행 완료, 기록용)
 `oneoff-publisher.zip`을 받아 압축을 푼 폴더에서 Claude Code를 열고 그대로 붙여 넣는다.
 
 ```
