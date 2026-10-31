@@ -1,0 +1,4 @@
+pillow>=10.0
+requests>=2.31
+numpy>=1.26  # 배경음악 합성
+imageio-ffmpeg>=0.5  # ffmpeg 실행 파일 포함

@@ -1,0 +1,127 @@
+# 일회성 주제 → 인스타 릴스·스레드·유튜브 쇼츠 발행
+# 카드뉴스봇(superabba/my-site)과 완전히 분리: 예약 실행 없음, 카드뉴스봇 DB·브랜치를 건드리지 않음.
+# 게시물 원고는 data 브랜치 posts/<id>/ 에 있고, 결과(published.json·log.jsonl)도 data 브랜치에 쌓인다.
+name: 일회성 발행
+
+on:
+  workflow_dispatch:
+    inputs:
+      post:
+        description: "data 브랜치 posts/ 아래 폴더 이름 (예: 20261031-joym-5500)"
+        required: true
+      action:
+        description: "render=영상·슬라이드만 다시 만들기 / publish=있는 결과물로 게시(없으면 만듦) / render-publish=다시 만들고 게시"
+        type: choice
+        default: publish
+        options: [publish, render, render-publish]
+      platforms:
+        description: "비우면 spec.json의 platforms (예: reels,threads,youtube)"
+        required: false
+
+permissions:
+  contents: write # data 브랜치 커밋 + 게시용 파일 호스팅
+
+concurrency:
+  group: oneoff-${{ inputs.post }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      DATA_BRANCH: data
+      POST_DIR: ${{ github.workspace }}/data/posts/${{ inputs.post }}
+      # 게시 계정 (Settings → Secrets and variables → Actions → Secrets)
+      # my-site의 '일회성 발행기 시크릿 동기화' 워크플로가 카드뉴스봇 값을 복사해 넣는다.
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+      THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+      YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+      YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+      YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID || vars.YOUTUBE_CHANNEL_ID }}
+      YOUTUBE_PRIVACY: ${{ secrets.YOUTUBE_PRIVACY || vars.YOUTUBE_PRIVACY }}
+      # 게시용 파일 호스팅: 이 (공개) 저장소의 data 브랜치 media/
+      GITHUB_TOKEN: ${{ github.token }}
+      GITHUB_REPO: ${{ github.repository }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: data 브랜치 준비
+        run: |
+          git config --global user.name "oneoff-bot"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch --depth=1 origin "$DATA_BRANCH:$DATA_BRANCH"
+          git worktree add data "$DATA_BRANCH"
+          if [ ! -f "$POST_DIR/spec.json" ]; then
+            echo "::error::data 브랜치에 posts/${{ inputs.post }}/spec.json이 없습니다"; exit 1
+          fi
+          python -m oneoff check "$POST_DIR"
+
+      - name: 영상·슬라이드 만들기
+        if: inputs.action != 'publish' || hashFiles(format('data/posts/{0}/reel.mp4', inputs.post)) == ''
+        run: python -m oneoff render "$POST_DIR"
+
+      - name: 게시
+        if: inputs.action != 'render'
+        env:
+          PLATFORMS: ${{ inputs.platforms }}
+        run: python -m oneoff publish "$POST_DIR" --platforms "$PLATFORMS" --log "${{ github.workspace }}/data/log.jsonl"
+
+      - name: 결과 저장 (data 브랜치)
+        if: always()
+        working-directory: data
+        run: |
+          git add -A
+          if git diff --cached --quiet; then echo "변경 없음"; exit 0; fi
+          git commit -m "oneoff: ${{ inputs.post }} ${{ inputs.action }} #${{ github.run_number }}"
+          # 게시용 파일 업로드(API 커밋)로 브랜치가 앞서 나갔을 수 있으므로 리베이스 후 푸시
+          for i in 1 2 3; do
+            git fetch origin "$DATA_BRANCH" && git rebase FETCH_HEAD && git push origin "HEAD:$DATA_BRANCH" && exit 0
+            sleep $((i * 5))
+          done
+          echo "::error::data 브랜치 푸시 실패"; exit 1
+
+      - name: 실행 요약
+        if: always()
+        run: |
+          {
+            echo "## ${{ inputs.post }} (${{ inputs.action }})"
+            if [ -f "$POST_DIR/published.json" ]; then
+              python - <<'PY'
+          import json, os
+          m = json.load(open(os.path.join(os.environ["POST_DIR"], "published.json"), encoding="utf-8"))
+          names = {"reels": "인스타 릴스", "threads": "스레드", "youtube": "유튜브 쇼츠"}
+          for k, v in m.get("posts", {}).items():
+              print(f"- {names.get(k, k)}: {v.get('permalink') or v.get('media_id')}")
+          for k, v in m.get("errors", {}).items():
+              print(f"- ❌ {names.get(k, k)}: {v[:300]}")
+          PY
+            else
+              echo "- 게시 기록 없음 (render만 했거나 게시 전에 실패)"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 결과물 아티팩트
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: oneoff-${{ inputs.post }}-${{ github.run_number }}
+          path: |
+            data/posts/${{ inputs.post }}/reel.mp4
+            data/posts/${{ inputs.post }}/reel_cover.jpg
+            data/posts/${{ inputs.post }}/slide_*.jpg
+            data/posts/${{ inputs.post }}/preview_*.jpg
+          if-no-files-found: ignore
+          retention-days: 14

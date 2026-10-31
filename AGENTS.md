@@ -1,0 +1,32 @@
+# AGENTS.md — 이 저장소에서 일하는 AI 에이전트용 규칙
+
+## 이 저장소가 하는 일
+사용자가 준 주제·사진으로 인스타 릴스·스레드·유튜브 쇼츠를 만들어 게시한다 (일회성, 수동 실행).
+네이버 블로그 발행은 이 저장소 밖(채팅 Claude + Uplika)에서 한다. 절차는 `skills/oneoff-publish/SKILL.md`.
+
+## 절대 규칙
+1. **카드뉴스봇(`superabba/my-site`)을 건드리지 않는다.** `cardbot-data` 브랜치, `cardbot.db`, `cardnews.yml`을
+   읽거나 쓰지 않는다. 예외는 `my-site/.github/workflows/oneoff-secrets-sync.yml` (시크릿 복사 전용) 하나.
+2. 예약 실행(`schedule`)을 이 저장소에 추가하지 않는다. 사람이 요청할 때만 돈다.
+3. 사실이 아닌 내용을 원고에 넣지 않는다. 사진·사용자 말·확인한 공식 페이지에 있는 것만 쓴다.
+   확인 못 한 것은 "확인하지 못함", 직접 계산한 숫자는 "제 계산"으로 표시한다.
+4. 게시 전에 `python -m oneoff preview`로 만든 미리보기를 **직접 눈으로** 확인한다.
+5. 같은 게시물을 두 번 올리지 않는다. `published.json`의 `posts`에 있는 플랫폼은 코드가 자동으로 건너뛴다 —
+   이 파일을 손으로 지우지 말 것.
+
+## 브랜치
+- `main`: 코드·문서만. 게시물을 커밋하지 않는다 (`.gitignore`에 `posts/`).
+- `data`: `posts/<id>/`(원고·사진·결과물), `media/`(공개 호스팅용, 자동), `log.jsonl`.
+
+## 코드 규칙
+- `publishers.py`, `youtube.py`, `hosting.py`, `music.py`는 카드뉴스봇에서 복사한 파일이다.
+  카드뉴스봇 쪽에서 API 대응이 바뀌면 같이 맞춘다 (원본: `my-site/cardnews-bot/cardbot/`).
+- 렌더 스타일을 바꾸면 `examples/joym-5500`으로 `preview`를 다시 만들어 확인하고, `pytest`를 돌린다.
+- 영상: 30fps, 장면별 mp4 → concat `-c copy` → 음원 `-c:v copy`. 장면 파일은 `.part.mp4`로 쓰고 성공 시 이름 변경.
+- 커밋 메시지·주석은 한국어.
+
+## 테스트
+```bash
+pip install -r requirements.txt pytest
+python -m pytest -q tests
+```
