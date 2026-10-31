@@ -99,6 +99,21 @@
 - 사용자가 분위기별 샘플 5개와 다시 렌더한 조이모바일 영상을 듣고 "이대로 좋다"고 확인.
 - Windows 기본 인코딩(cp949)에서는 기존 테스트 2개가 `read_text()` 인코딩 문제로 실패 → `PYTHONUTF8=1`로 돌림 (CI 리눅스는 영향 없음).
 
+## 7. 배경음악 곡 라이브러리 (2026-11-01)
+- 사용자: 합성 음악이 단조롭다 → 무료로 쓸 수 있는 음악·생성 모델 조사 → **실제 곡 라이브러리** 방향으로 결정.
+- 생성 모델은 보류. 이 PC는 NVIDIA GPU가 없고(내장 Intel Arc), GitHub Actions도 CPU라서.
+  공식 모델 카드 라이선스: ACE-Step 1.5 MIT(가장 유력, 나중에 GPU로 곡을 미리 만들어 라이브러리에 보탤 수 있음),
+  MusicGen·MusicGen-Melody·MMAudio·AudioLDM2 = CC-BY-NC(상업 불가), Stable Audio Open = Stability Community License(가입 필요),
+  VidMuse = CC-BY-4.0(영상→음악, GPU 필요).
+- 곡 출처: Hugging Face `benjamin-paine/free-music-archive-full` (FMA 약 10만 곡, 524GB). 곡마다 license·instrumental·
+  allow_commercial_use·allow_derivatives·require_share_alike 필드가 있어 **CC0·PD·CC BY 연주곡만** 거름.
+- `tools/fma.py`: scan(곡 정보 열만 읽기, 972개 파일 451초) → 후보 **1,119곡** (CC0·PD 110곡, 옛 녹음 빼면 16곡).
+  fetch는 100곡이 snappy로 묶인 parquet 페이지를 앞에서부터 그 곡까지만 풀어 mp3를 꺼냄 (pos 0 곡 4초, pos 7 곡 12초).
+- 렌더: 분위기 곡이 `music/library.json`에 있으면 그 곡(70초 발췌, −16 LUFS), 없으면 합성. 영상이 더 길면 처음부터 반복.
+  CC BY 곡은 `music.json`에 출처를 남기고 publish가 캡션·스레드 끝에 `🎵 제목 - 작곡가 (CC BY x.x, 편집) 주소`를 붙임.
+- 임시 라이브러리(20초 발췌)로 조이모바일 예시를 렌더해 확인: 27.5초 유지, 20초 뒤 끊김 없이 반복, music.json에 출처 기록.
+- 확인 못 한 것: 곡들이 유튜브 Content ID에 등록돼 있는지 (CC BY여도 작곡가가 등록했으면 자동 신고가 붙을 수 있음).
+
 ---
 
 ## 남은 일
@@ -112,6 +127,7 @@
 - [x] (사용자) 배경음악 샘플 5개 듣고 확인 — 이대로 좋음
 - [x] (사용자) 클립 프로필 이름 '경제주모' 확인 — 맞는 이름
 - [ ] (사용자) claude.ai에 설치된 oneoff-publish 스킬을 새 `skills/oneoff-publish/SKILL.md`로 갱신
+- [ ] (사용자) 배경음악 후보 25곡(분위기별 5곡) 미리듣기 → 마음에 드는 곡 고르기 → Claude가 `tools/fma.py add`로 라이브러리에 넣기
 
 ## Claude Code용 저장소 생성 프롬프트 (2026-10-31 실행 완료, 기록용)
 `oneoff-publisher.zip`을 받아 압축을 푼 폴더에서 Claude Code를 열고 그대로 붙여 넣는다.

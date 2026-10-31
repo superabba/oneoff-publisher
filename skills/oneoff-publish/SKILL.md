@@ -63,7 +63,8 @@ description: 주제와 사진(이벤트·특가·혜택 캡처)을 주며 경제
 - music: 주제 분위기를 보고 직접 고른다 (README 'spec.json 형식'의 배경음악 표).
   `calm` 잔잔(정보 정리) / `warm` 따뜻(지원금·환급·생활 정보) / `bright` 경쾌(특가·할인·이벤트·혜택) /
   `upbeat` 신나는(선착순·마감 임박) / `tense` 주의(사기·피싱·손해). 사용자가 분위기를 말하면 그대로 따른다.
-  비우면 `auto`(원고 단어로 선택). `check` 출력의 '배경음악' 줄로 확인한다.
+  비우면 `auto`(원고 단어로 선택). 그 분위기 곡이 `music/library.json`에 있으면 실제 곡을, 없으면 합성 음악을 쓴다.
+  사용자가 곡을 지정하면 `music_track`. `check` 출력의 '배경음악'·'출처 표기' 줄로 확인한다.
 
 ### 5. 미리보기 확인 (필수)
 ```bash
@@ -87,6 +88,7 @@ python -m oneoff check posts/<id> && python -m oneoff preview posts/<id>
 - `list_accounts`(workspaceId 경제주막)에 `platform: naver_clip` 계정이 있는지 확인. 없으면 위 '고정값'대로 안내하고 멈춘다.
 - 영상: data 브랜치 `posts/<id>/reel.mp4`의 raw URL을 `media_from_url`(workspaceId 경제주막, aiGenerated false)로 올린다.
 - 설명: 스레드 글을 줄여 **설명 + 태그(#) 합계 300자 이하** (UTF-16 길이로 미리 계산). 태그는 최대 5개.
+  `posts/<id>/music.json`의 `credit`이 비어 있지 않으면(CC BY 곡) 그 줄을 설명 끝에 **반드시** 넣고 그만큼 본문을 줄인다.
 - `publish`: options.naver_clip = categoryId(2단계 id, 특가·할인은 `쇼핑 › 할인정보` 등 계정의 categories에서 선택),
   tags, visibility public, aiGenerated false, adDisclosure false(대가성 없을 때), `wait: true`.
 - Uplika는 클립 수정·삭제를 못 한다 → 올린 뒤 고칠 일이 생기면 사용자가 clipcreators.naver.com에서 직접.

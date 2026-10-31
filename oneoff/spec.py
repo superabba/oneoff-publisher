@@ -63,6 +63,7 @@ class Spec:
     theme: dict = field(default_factory=lambda: dict(DEFAULT_THEME))
     handle: str = "@economypub"
     music: str = MUSIC_AUTO
+    music_track: str = ""  # 곡 라이브러리에서 직접 지정 ("bright/xxx.m4a"), "synth"면 합성
     youtube_privacy: str = ""  # 비우면 YOUTUBE_PRIVACY 시크릿/변수(없으면 public)
 
     def color(self, name: str) -> tuple[int, int, int]:
@@ -134,6 +135,7 @@ def load(folder: Path) -> Spec:
         id=raw["id"], title=raw["title"].strip(), caption=raw["caption"].strip(),
         threads=raw["threads"].strip(), scenes=scenes, folder=folder, platforms=platforms,
         theme=theme, handle=raw.get("handle", "@economypub"), music=music,
+        music_track=str(raw.get("music_track") or "").strip(),
         youtube_privacy=privacy,
     )
 

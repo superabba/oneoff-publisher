@@ -18,15 +18,23 @@ from . import spec as specmod
 
 
 def cmd_check(a) -> int:
-    from .bgm import pick_mood
+    from .bgm import credit, pick_mood, pick_track
 
     s = specmod.load(Path(a.folder))
     warns = specmod.warnings(s)
     print(f"OK: {s.id} — 장면 {len(s.scenes)}개, 플랫폼 {','.join(s.platforms)}")
     print(f"  캡션 {len(s.caption)}자 / 해시태그 {len(specmod.hashtags(s.caption))}개 / "
           f"스레드 {len(s.threads)}자 / 제목 {len(s.title)}자")
+    mood = pick_mood(s)
+    track = pick_track(s, mood)
     auto = " (원고 글자로 자동 선택)" if s.music == specmod.MUSIC_AUTO else ""
-    print(f"  배경음악 {pick_mood(s)}{auto}")
+    what = f"{track['file']} — {track['title']} / {track['artist']} ({track['license']})" if track else "합성"
+    print(f"  배경음악 {mood}{auto}: {what}")
+    line = credit(track)
+    if line:
+        print(f"  출처 표기(캡션·스레드 끝에 자동으로 붙음): {line}")
+        if len(s.threads) + len(line) + 2 > specmod.THREADS_MAX:
+            warns.append(f"스레드 글 + 출처 표기가 {specmod.THREADS_MAX}자를 넘어 본문 끝이 잘립니다")
     for w in warns:
         print(f"  경고: {w}")
     return 0

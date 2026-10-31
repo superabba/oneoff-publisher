@@ -16,7 +16,7 @@ from pathlib import Path
 
 from .hosting import GitHubHost
 from .publishers import ReelsPublisher, ThreadsPublisher
-from .spec import Spec, hashtags
+from .spec import IG_CAPTION_MAX, THREADS_MAX, Spec, hashtags
 
 log = logging.getLogger(__name__)
 
@@ -43,6 +43,17 @@ def make_publishers(platforms: list[str], privacy: str) -> list:
                 env("YOUTUBE_CHANNEL_ID"), privacy, env("YOUTUBE_CATEGORY", "27"), False,
             ))
     return pubs
+
+
+def with_credit(text: str, folder: Path, limit: int) -> str:
+    """render가 남긴 music.json에 출처 표기(CC BY 곡)가 있으면 글 끝에 붙인다. 넘치면 본문을 줄인다."""
+    path = folder / "music.json"
+    line = json.loads(path.read_text(encoding="utf-8")).get("credit", "") if path.exists() else ""
+    if not line:
+        return text[:limit]
+    room = limit - len(line) - 2
+    body = text if len(text) <= room else text[:room - 1].rstrip() + "…"
+    return f"{body}\n\n{line}"
 
 
 def make_host() -> GitHubHost:
@@ -97,7 +108,10 @@ def publish(spec: Spec, platforms: list[str] | None = None, publishers=None, hos
         if pub.name in meta.get("posts", {}):
             log.info("%s: 이미 게시됨, 건너뜀", pub.name)
             continue
-        text = spec.threads[:500] if pub.name == "threads" else spec.caption
+        if pub.name == "threads":
+            text = with_credit(spec.threads, folder, THREADS_MAX)
+        else:
+            text = with_credit(spec.caption, folder, IG_CAPTION_MAX)
         try:
             res = pub.publish(assets, text)
         except Exception as e:  # 한 플랫폼이 실패해도 나머지는 진행

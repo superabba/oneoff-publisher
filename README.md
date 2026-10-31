@@ -30,12 +30,14 @@ oneoff/            코드
   spec.py          spec.json 읽기·검사
   render.py        장면 그리기 (블록 배치, 1080x1920 영상 장면 / 1080x1350 슬라이드)
   video.py         등장 애니메이션·줌·진행 바 → 장면별 mp4 → 이어 붙이기 → 배경음악
-  bgm.py           분위기별 배경음악 (잔잔·따뜻·경쾌·신나는·주의), auto면 원고 단어로 고름
+  bgm.py           분위기별 배경음악: 곡 라이브러리(music/)에서 고르고 없으면 합성, CC BY 출처 표기
   publish.py       게시 (이미 올린 플랫폼은 건너뜀)
   publishers.py    인스타·스레드 API   ┐
   youtube.py       유튜브 업로드        ├ 카드뉴스봇에서 그대로 복사
   hosting.py       공개 URL 만들기      │
   music.py         잔잔한 배경음악 합성  ┘
+music/             배경음악 라이브러리 (library.json + <분위기>/*.m4a, Free Music Archive의 CC0·CC BY 연주곡)
+tools/fma.py       라이브러리에 넣을 곡 찾기·받기·넣기 (이 PC에서만, pyarrow·huggingface_hub 필요)
 fonts/             Pretendard (OFL)
 examples/          예시 게시물 (조이모바일 알뜰폰 특가)
 skills/            채팅 Claude가 따르는 절차 (SKILL.md)
@@ -94,20 +96,40 @@ GitHub에서: Actions → **일회성 발행** → Run workflow → `post`에 �
 
 글자가 넘치면 자동으로 줄이고, 화면이 비어 보이면 키운다 (블록 전체 비율 유지).
 
-배경음악 (`music`) — 매번 직접 합성하므로 저작권 걱정이 없고, 게시물 id에 따라 키·코드 진행·빠르기가 조금씩 달라진다.
-분위기가 달라도 체감 음량은 약 −16 LUFS로 맞춰 둔다.
+배경음악 (`music`) — 분위기를 정하면 **곡 라이브러리(`music/`)에서 그 분위기 곡을 게시물마다 하나** 고르고,
+그 분위기 곡이 없으면 직접 합성한다. 어느 쪽이든 체감 음량은 약 −16 LUFS로 맞춰 둔다.
 
-| 값 | 분위기 | 어울리는 주제 |
-|---|---|---|
-| `calm` | 잔잔 — 패드 + 피아노풍 아르페지오 (카드뉴스봇과 같은 음악) | 정보 정리, 일반 |
-| `warm` | 따뜻 — 느긋한 아르페지오 + 셰이커 | 지원금·환급·생활 정보 |
-| `bright` | 경쾌 — 통통 튀는 플럭 + 가벼운 드럼 | 특가·할인·이벤트·혜택 |
-| `upbeat` | 신나는 — 네 박 킥 + 엇박 화음 | 선착순·마감 임박·역대급 |
-| `tense` | 주의 — 단조 + 일정하게 뛰는 베이스 | 사기·피싱·함정·손해 |
-| `auto` | 제목·장면 글자의 단어로 위에서 고름 (걸리는 단어 없으면 `calm`) | 기본값 |
-| `none` | 무음 | |
+| 값 | 분위기 | 어울리는 주제 | 합성할 때 소리 |
+|---|---|---|---|
+| `calm` | 잔잔 | 정보 정리, 일반 | 패드 + 피아노풍 아르페지오 (카드뉴스봇과 같음) |
+| `warm` | 따뜻 | 지원금·환급·생활 정보 | 느긋한 아르페지오 + 셰이커 |
+| `bright` | 경쾌 | 특가·할인·이벤트·혜택 | 통통 튀는 플럭 + 가벼운 드럼 |
+| `upbeat` | 신나는 | 선착순·마감 임박·역대급 | 네 박 킥 + 엇박 화음 |
+| `tense` | 주의 | 사기·피싱·함정·손해 | 단조 + 일정하게 뛰는 베이스 |
+| `auto` | 제목·장면 글자의 단어로 위에서 고름 (걸리는 단어 없으면 `calm`) | 기본값 | |
+| `none` | 무음 | | |
 
-`python -m oneoff check`가 어떤 분위기로 정해졌는지 보여 준다.
+- 곡을 직접 고르려면 `"music_track": "bright/xxx.m4a"` (`music/library.json`의 `file`), 합성을 원하면 `"music_track": "synth"`.
+- `python -m oneoff check`가 어떤 분위기·곡으로 정해졌는지와 출처 표기를 보여 준다.
+- **CC BY 곡은 출처 표기가 필요하다.** `render`가 `music.json`에 어떤 곡을 썼는지 남기고, `publish`가 릴스·쇼츠 설명과
+  스레드 글 끝에 `🎵 제목 - 작곡가 (CC BY 4.0, 편집) 곡 주소` 한 줄을 붙인다 (넘치면 본문 끝을 줄임).
+  네이버 클립은 Uplika로 따로 올리므로 설명에 같은 줄을 직접 넣는다. CC0·퍼블릭 도메인 곡은 표기가 필요 없다.
+
+### 곡 라이브러리에 곡 넣기 (`tools/fma.py`)
+
+Free Music Archive 전곡이 담긴 Hugging Face 데이터셋(`benjamin-paine/free-music-archive-full`, 524GB)에서
+**연주곡이면서 CC0·퍼블릭 도메인·CC BY인 곡만** 쓴다. 영상에 음악을 입히는 것은 CC에서 2차적 저작물이라
+ND(변경 금지)·SA(동일조건)는 쓸 수 없고, NC(비영리)는 수익이 나는 계정에 쓰지 않는다.
+
+```bash
+pip install pyarrow huggingface_hub          # 이 도구만 필요 (게시 워크플로에는 필요 없음)
+python tools/fma.py scan                     # 곡 정보만 읽어 후보 목록 (.cache/fma_catalog.json, 10분 안팎)
+python tools/fma.py fetch 173:0 512:37       # 후보 mp3 받기 (.cache/fma_tracks/)
+python tools/fma.py add .cache/fma_tracks/173-000-....mp3 --mood calm   # 70초 발췌·-16 LUFS로 music/에 넣기
+```
+
+`fetch`는 parquet 안에서 곡 100개가 하나로 압축된 덩어리를 앞에서부터 그 곡까지만 받아 푼다 (앞쪽 곡일수록 빠름).
+`add`는 인트로가 조용하면 소리가 커지는 지점부터 자른다 (`--start`로 직접 지정 가능). **넣기 전에 꼭 들어 본다.**
 
 ## 처음 한 번 설정
 

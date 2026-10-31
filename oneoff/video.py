@@ -12,6 +12,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import math
 import subprocess
@@ -19,7 +20,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-from .bgm import audio_filter, pick_mood, write_track
+from . import bgm
+from .bgm import audio_filter, credit, pick_mood, pick_track, track_filter, write_track
 from .render import VIDEO, W, Placed, background, draw_handle, layout
 from .spec import MUSIC_AUTO, MUSIC_OFF, Spec
 
@@ -182,15 +184,26 @@ def render_video(spec: Spec, out_dir: Path) -> tuple[Path, Path, float]:
     out = out_dir / "reel.mp4"
     tmp = out_dir / "reel.part.mp4"
     mood = pick_mood(spec)
+    track = pick_track(spec, mood)
+    auto = " (원고 글자로 자동 선택)" if spec.music == MUSIC_AUTO else ""
     if mood == MUSIC_OFF:
         cmd = [ffmpeg(), "-y", "-loglevel", "error", "-i", str(silent),
                "-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100"]
         af = []
+    elif track:  # 발췌가 영상보다 짧으면 처음부터 다시 이어 붙인다
+        cmd = [ffmpeg(), "-y", "-loglevel", "error", "-i", str(silent),
+               "-stream_loop", "-1", "-i", str(bgm.LIBRARY / track["file"])]
+        af = ["-af", track_filter(total)]
+        log.info("배경음악: %s%s — %s / %s (%s)", mood, auto, track["title"], track["artist"], track["license"])
     else:
         wav = write_track(work / "music.wav", total + 1, spec.id, mood)
         cmd = [ffmpeg(), "-y", "-loglevel", "error", "-i", str(silent), "-i", str(wav)]
         af = ["-af", audio_filter(mood, total)]
-        log.info("배경음악: %s%s", mood, " (원고 글자로 자동 선택)" if spec.music == MUSIC_AUTO else "")
+        log.info("배경음악: %s%s (합성)", mood, auto)
+    # 게시할 때 출처 표기를 붙이려고 어떤 곡을 썼는지 남긴다
+    (out_dir / "music.json").write_text(json.dumps(
+        {"mood": mood, "source": "library" if track else ("none" if mood == MUSIC_OFF else "synth"),
+         "track": track, "credit": credit(track)}, ensure_ascii=False, indent=2), encoding="utf-8")
     cmd += ["-map", "0:v", "-map", "1:a", *af, "-shortest", "-c:v", "copy",
             "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", str(tmp)]
     _run(cmd)

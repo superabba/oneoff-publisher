@@ -1,4 +1,9 @@
-"""분위기별 배경음악 합성 (저작권 걱정 없음).
+"""분위기별 배경음악: 곡 라이브러리(music/)에서 고르고, 그 분위기 곡이 없으면 합성한다.
+
+곡 라이브러리: music/library.json + music/<분위기>/*.m4a
+  Free Music Archive의 CC0·CC BY 연주곡을 tools/fma.py로 골라 70초 발췌·−16 LUFS로 맞춰 둔 것.
+  CC BY 곡은 출처 표기가 필요해서 credit()이 만든 한 줄을 게시할 때 캡션 끝에 붙인다.
+  spec.json "music_track"으로 곡을 직접 지정할 수 있다 ("bright/xxx.m4a", 합성을 원하면 "synth").
 
 spec.json의 "music":
   auto    원고(제목·장면 글자)의 단어로 고른다. 걸리는 단어가 없으면 calm
@@ -24,7 +29,10 @@ import numpy as np
 
 from . import music
 from .music import SR, _envelope, _hz, _seed
-from .spec import MUSIC_AUTO, Spec
+from .spec import MUSIC_AUTO, MUSIC_OFF, Spec, SpecError
+
+LIBRARY = Path(__file__).resolve().parent.parent / "music"
+SYNTH = "synth"
 
 # 화음 (C 기준 MIDI 음 번호)
 C = [48, 55, 60, 64]
@@ -99,6 +107,38 @@ def pick_mood(spec: Spec) -> str:
     scores = {mood: sum(text.count(w) for w in words) for mood, words in KEYWORDS.items()}
     best = max(scores, key=scores.get)
     return best if scores[best] else "calm"
+
+
+def library(folder: Path | None = None) -> list[dict]:
+    path = (folder or LIBRARY) / "library.json"
+    return json.loads(path.read_text(encoding="utf-8"))["tracks"] if path.exists() else []
+
+
+def pick_track(spec: Spec, mood: str, folder: Path | None = None) -> dict | None:
+    """라이브러리에서 그 분위기 곡을 게시물마다(id로) 하나 고른다. None이면 합성한다."""
+    if mood == MUSIC_OFF or spec.music_track == SYNTH:
+        return None
+    tracks = library(folder)
+    if spec.music_track:
+        for t in tracks:
+            if t["file"] == spec.music_track:
+                return t
+        raise SpecError(f"music_track '{spec.music_track}'이 music/library.json에 없습니다")
+    same = [t for t in tracks if t["mood"] == mood]
+    return same[_seed(spec.id) % len(same)] if same else None
+
+
+def credit(track: dict | None) -> str:
+    """CC BY 곡의 출처 표기 한 줄 (CC0·퍼블릭 도메인이면 빈 문자열). 자르고 음량을 맞췄으니 '편집'을 밝힌다."""
+    if not track or not track.get("attribution"):
+        return ""
+    lic = track["license"].replace("CC-BY", "CC BY")
+    return f"🎵 {track['title']} - {track['artist']} ({lic}, 편집) {track['url']}"
+
+
+def track_filter(total: float) -> str:
+    """라이브러리 곡용 ffmpeg 필터. 음량은 미리 −16 LUFS로 맞춰 두었으니 페이드만."""
+    return f"afade=t=in:d=0.3,afade=t=out:st={max(0.0, total - 1.8):.2f}:d=1.8,alimiter=limit=0.9:level=false"
 
 
 def _bass_root(m: int) -> int:

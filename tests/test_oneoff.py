@@ -61,6 +61,40 @@ def test_auto_music_follows_text(post):
     assert bgm.pick_mood(s) == "warm"
 
 
+TRACK = {"file": "bright/a.m4a", "mood": "bright", "title": "Song", "artist": "Someone", "license": "CC-BY 4.0",
+         "attribution": True, "url": "https://freemusicarchive.org/music/x"}
+
+
+def test_library_track_and_credit(post, tmp_path):
+    s = specmod.load(post)
+    calm = {**TRACK, "file": "calm/b.m4a", "mood": "calm", "license": "CC0 1.0", "attribution": False}
+    (tmp_path / "library.json").write_text(json.dumps({"tracks": [TRACK, calm]}), encoding="utf-8")
+    assert bgm.pick_track(s, "bright", tmp_path)["file"] == "bright/a.m4a"
+    assert bgm.pick_track(s, "tense", tmp_path) is None  # 그 분위기 곡이 없으면 합성
+    assert bgm.credit(calm) == ""  # CC0는 표기 필요 없음
+    assert bgm.credit(TRACK) == "🎵 Song - Someone (CC BY 4.0, 편집) https://freemusicarchive.org/music/x"
+    s.music_track = "calm/b.m4a"
+    assert bgm.pick_track(s, "bright", tmp_path)["mood"] == "calm"
+    s.music_track = "synth"
+    assert bgm.pick_track(s, "bright", tmp_path) is None
+    s.music_track = "nope.m4a"
+    with pytest.raises(specmod.SpecError):
+        bgm.pick_track(s, "bright", tmp_path)
+
+
+def test_publish_appends_music_credit(post):
+    _fake_outputs(post)
+    line = bgm.credit(TRACK)
+    (post / "music.json").write_text(json.dumps({"credit": line}, ensure_ascii=False), encoding="utf-8")
+    s = specmod.load(post)
+    s.threads = "가" * 495
+    reels, threads = FakePub("reels", needs_video=True), FakePub("threads")
+    publish(s, publishers=[reels, threads], host=FakeHost())
+    assert reels.seen[0][1] == f"{s.caption}\n\n{line}"
+    text = threads.seen[0][1]
+    assert len(text) <= 500 and text.endswith(line) and "…" in text  # 넘치면 본문을 줄이고 표기는 지킨다
+
+
 @pytest.mark.parametrize("mood", specmod.MUSIC_MOODS)
 def test_music_moods(mood):
     a = bgm.compose(4, "seed", mood)

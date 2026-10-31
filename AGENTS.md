@@ -40,7 +40,9 @@
 | `oneoff/spec.py` | `spec.json` 읽기·검사 (글자 수, 사진 존재, 블록 형식) |
 | `oneoff/render.py` | 블록(label·headline·text·photo·card·pill·spacer) 배치 → 1080x1920 장면 / 1080x1350 슬라이드 |
 | `oneoff/video.py` | 등장 애니메이션·줌·진행 바 → 장면별 mp4 → concat → 배경음악 |
-| `oneoff/bgm.py` | 분위기별 배경음악 합성 (calm·warm·bright·upbeat·tense, auto는 원고 단어로 선택). calm은 `music.py` 그대로 |
+| `oneoff/bgm.py` | 분위기별 배경음악 (calm·warm·bright·upbeat·tense, auto는 원고 단어로 선택). 곡 라이브러리 → 없으면 합성(calm은 `music.py` 그대로). CC BY 출처 표기 |
+| `music/` | 배경음악 라이브러리: `library.json` + `<분위기>/*.m4a` (70초 발췌, −16 LUFS) |
+| `tools/fma.py` | Free Music Archive(HF 데이터셋)에서 라이브러리 곡 찾기(scan)·받기(fetch)·넣기(add). 이 PC에서만 실행 |
 | `oneoff/publish.py` | 게시 (DB 없이 `published.json`·`log.jsonl`에 기록) |
 | `oneoff/publishers.py`, `youtube.py`, `hosting.py`, `music.py` | 카드뉴스봇에서 **그대로 복사** (원본 `my-site/cardnews-bot/cardbot/`) |
 | `.github/workflows/publish.yml` | 수동 실행: `post`, `action`(publish/render/render-publish), `platforms` |
@@ -50,6 +52,9 @@
 - 렌더 스타일을 바꾸면 `examples/joym-5500`으로 `preview`를 다시 만들어 보고 `pytest`를 돌린다.
 - 영상: 30fps, 장면별 mp4 → concat `-c copy` → 음원 `-c:v copy`. 장면 파일은 `.part.mp4`로 쓰고 성공 시 이름 변경.
 - 배경음악 분위기를 추가·수정하면 ffmpeg `ebur128`로 재서 다른 분위기와 체감 음량(약 −16 LUFS)을 맞춘다 (`bgm.py`의 `level`).
+- 곡 라이브러리에는 **CC0·Public Domain Mark·CC BY만** 넣는다 (ND·SA·NC 금지 — 영상에 입히면 2차적 저작물, 계정은 수익 목적).
+  `tools/fma.py`가 이 조건으로 거른다. 새 곡은 사용자가 직접 들어 보고 고른 것만 넣는다.
+- CC BY 곡의 출처 표기(`music.json`의 `credit`)는 지우지 않는다. 네이버 클립 설명에도 넣는다.
 - 커밋 메시지·주석·문서는 한국어.
 
 ## 이 세션 환경에서 막혀 있는 것 (클라우드 Claude 기준)

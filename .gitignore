@@ -6,4 +6,6 @@ examples/*/_scenes/
 examples/*/reel.mp4
 examples/*/reel_cover.jpg
 examples/*/slide_*.jpg
+examples/*/music.json
 .env
+.cache/
