@@ -1,0 +1,48 @@
+{
+  "id": "20261101-funetf-onepick",
+  "title": "FunETF 신규회원 ONE PICK 이벤트, 배민 5천원 받는 2단계 조건 정리",
+  "caption": "신규 가입하고 2단계만 하면 배민 5천원? 🛵\n삼성자산운용 FunETF의 '나만의 ONE PICK' 이벤트예요. 이벤트 화면 기준으로 조건을 정리했어요.\n\n✔ 기간: 2026.10.27(화) ~ 11.30(월)\n✔ 대상: FunETF 신규회원 가입자 (10월·11월)\n✔ STEP 1: '분배금 알림 신청하기' → 앱푸시 수신 동의\n✔ STEP 2: 월말 분배금 대상 KODEX ETF 128종 중 1종 PICK\n✔ 경품: 배민 5천원 상품권 전원, 12월 중 휴대폰으로 발송\n\n⚠ 이런 점은 확인하세요\n· STEP 1·2 둘 다 해야 참여 인정\n· FunETF 앱에서만 신청 가능\n· 이벤트 끝날 때까지 앱푸시 ON 유지\n· 마케팅(문자) 수신 동의 필수, 회원정보 휴대폰 번호로만 발송\n· ETF는 원금 손실이 날 수 있는 투자상품이에요\n\n자세한 정리는 네이버 블로그 '경제주막'에 올려뒀어요.\n※ 이벤트 안내 화면 기준 정리 · 참여 전 공식 안내에서 꼭 확인하세요\n\n#FunETF #펀ETF #삼성자산운용 #KODEX #ONEPICK #신규가입이벤트 #배민상품권 #전원증정 #앱테크 #ETF",
+  "threads": "FunETF 신규회원 'ONE PICK' 이벤트, 배민 5천원 전원 증정 (10/27~11/30)\n\n· STEP 1 분배금 알림 신청 (앱푸시 동의)\n· STEP 2 KODEX ETF 128종 중 1종 PICK\n· 둘 다 해야 인정, 앱에서만 가능\n· 이벤트 끝까지 앱푸시 ON 유지\n· 12월 중 휴대폰으로 발송\n\n#FunETF #앱테크",
+  "platforms": ["reels", "threads", "youtube"],
+  "handle": "@economypub",
+  "theme": {"bg": "#C9DDFF", "ink": "#0E1D57", "accent": "#1D5CFF", "card": "#FFFFFF"},
+  "music": "bright",
+  "scenes": [
+    {"blocks": [
+      {"type": "label", "text": "삼성자산운용 FunETF"},
+      {"type": "headline", "text": "2단계면 [5천원]", "size": 140},
+      {"type": "text", "text": "신규회원 배민 상품권 전원 증정", "size": 66},
+      {"type": "photo", "src": "event.jpg", "width": 560},
+      {"type": "pill", "text": "10/27(화) ~ 11/30(월)", "size": 50}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "대상"},
+      {"type": "headline", "text": "[신규회원]만", "size": 150},
+      {"type": "card", "lines": ["FunETF 신규회원 가입 대상", "(10월·11월 가입)", "[FunETF 앱에서만 신청]"], "size": 56}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "STEP 1"},
+      {"type": "headline", "text": "분배금 [알림] 신청", "size": 110},
+      {"type": "card", "lines": ["버튼을 누르면", "앱푸시 수신 동의 자동 체크", "[이벤트 끝까지 푸시 ON]"], "size": 54}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "STEP 2"},
+      {"type": "headline", "text": "128종 중 [1종] PICK", "size": 110},
+      {"type": "photo", "src": "onepick.jpg", "width": 560},
+      {"type": "text", "text": "월말 분배금 대상 KODEX ETF", "size": 52}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "받는 방법"},
+      {"type": "headline", "text": "[12월 중] 발송", "size": 140},
+      {"type": "card", "lines": ["당첨 발표 없이", "가입 때 넣은 휴대폰 번호로", "[마케팅 문자 동의 필수]"], "size": 54},
+      {"type": "pill", "text": "STEP 1·2 둘 다 해야 인정", "size": 46}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "정리"},
+      {"type": "headline", "text": "참여 전 [3가지]", "size": 140},
+      {"type": "card", "lines": ["① 신규회원 + 앱에서 신청", "② 알림 신청 + ONE PICK", "③ 푸시·문자 동의 유지"], "size": 56},
+      {"type": "text", "text": "ETF는 원금 손실이 날 수 있어요", "size": 46},
+      {"type": "pill", "text": "자세한 정리 · 네이버 블로그 '경제주막'", "size": 42, "style": "accent"}
+    ]}
+  ]
+}
