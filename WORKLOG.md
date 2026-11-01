@@ -120,13 +120,25 @@
   출처 줄의 FMA 곡 주소(데이터셋에 있던 옛 `http://` 주소)가 지금도 열리는지 (FMA가 명령줄 접속을 막아 확인 못 함).
 - my-site(카드뉴스봇·영상 업로더)에도 같은 방식을 적용하는 일은 사용자가 다른 세션에서 진행하기로 함.
 
+## 8. 첫 실제 발행: 신한 SOL트래블 체크 × CU 빼빼로아몬드 100원 (2026-11-01)
+- 폴더 `20261101-pepero-100` (data 브랜치), 배경음악 bright → 라이브러리 곡 Kevin MacLeod – Vibe Ace (CC BY 3.0), 27.1초, −16.0 LUFS.
+- 로컬 렌더 → data push → `publish.yml` `action=publish` **성공** (end-to-end 확인됨).
+  - 릴스 https://www.instagram.com/reel/DfLgYD5N2gS/
+  - 스레드 https://www.threads.com/@economypub/post/DfLggGSiR7x
+  - 쇼츠 https://youtube.com/shorts/6DS1HgDpXxI
+  - 릴스·쇼츠 설명과 스레드 끝에 출처 줄이 자동으로 붙음.
+- 블로그(경제): https://blog.naver.com/economypub/224460877075 (Uplika에 네이버 로그인이 풀려 있다는 안내가 떴지만 01:03에 발행됨)
+- 네이버 클립(경제주모, 쇼핑 › 할인정보): 같은 영상, 설명에 출처 줄 직접 포함(269자).
+- 사용자 요청: 영상을 **사진의 이미지와 같거나 비슷하게** 만들어 달라 → 요청이 늦게 와서 이번엔 노란 카드 스타일 그대로 발행, **다음부터는 항상 사진 스타일** (AGENTS.md 8번, 스킬).
+- 확인 못 한 것: 빼빼로아몬드 판매가·실제 결제액, 물량, 특수매장 목록, 카드 발급 조건 (글에 표시), 유튜브 Content ID 신고 여부.
+
 ---
 
 ## 남은 일
 - [x] (사용자) Claude Code에서 저장소 생성 + 코드 push — 아래 프롬프트
 - [x] (사용자) `CARDBOT_ADMIN_TOKEN`(PAT `cardbot-admin`)의 저장소 목록에 `oneoff-publisher` 추가
 - [x] 시크릿 동기화 실행(9개 복사) → 테스트 렌더(게시 없이) 성공
-- [ ] 다음 일회성 주제에서 첫 실제 게시 (end-to-end 확인)
+- [x] 다음 일회성 주제에서 첫 실제 게시 (end-to-end 확인) — 11/1 빼빼로 100원, 성공
 - [ ] (사용자) 2027-10-09 전에 `cardbot-admin` 토큰 만료 연장 — 만료되면 시크릿 동기화가 멈춤
 - [ ] (사용자) 슈퍼아빠 클립(스노우볼23)의 조이모바일 영상 삭제 — clipcreators.naver.com
 - [x] (사용자) Uplika economypub 워크스페이스에 네이버 클립 연결 → Claude가 조이모바일 영상 발행 (20:47)
