@@ -1,0 +1,58 @@
+{
+  "id": "20261101-funetf-5000",
+  "title": "FunETF 신규 가입하면 배민 5천원 전원 증정, 참여 전 꼭 볼 조건 정리",
+  "caption": "가입만 해도 배민 5천원? 🛵\n삼성자산운용 'FunETF'가 11월 한 달 동안 신규 회원 전원에게 배달의민족 5,000원 상품권을 준다고 안내하고 있어요. 이벤트 화면 기준으로 조건을 정리했어요.\n\n✔ 기간: 2026.11.1(일) ~ 11.30(월)\n✔ 대상: FunETF 신규 회원 (기존 회원은 참여 불가)\n✔ 방법: FunETF 앱 설치 후 회원 가입 (PC에서도 가능)\n✔ 경품: 배민 5천원 상품권, 12월 말 발송\n\n⚠ 이런 점은 확인하세요\n· 경품을 받으려면 마케팅 문자 수신 동의가 필수\n· 당첨 발표 없이 가입 때 넣은 휴대폰 번호로 기프티콘 발송\n· 이미 조건을 채운 고객·당첨 고객은 제외\n· 회사 사정으로 일정이 바뀌거나 중단될 수 있어요\n\n자세한 정리는 네이버 블로그 '경제주막'에 올려뒀어요.\n※ 이벤트 안내 화면 기준 정리 · 가입 전 공식 안내에서 꼭 확인하세요\n\n#FunETF #펀ETF #삼성자산운용 #신규가입이벤트 #배달의민족 #배민상품권 #전원증정 #ETF #앱테크 #짠테크",
+  "threads": "가입만 해도 배민 5천원, 조건부터 확인하세요.\n\n삼성자산운용 FunETF 신규 가입 이벤트 (11/1~11/30)\n· 신규 회원만 (기존 회원 불가)\n· 마케팅 문자 수신 동의 필수\n· 12월 말 휴대폰 번호로 기프티콘 발송\n· 일정 변경·중단 가능\n\n#FunETF #앱테크",
+  "platforms": ["reels", "threads", "youtube"],
+  "handle": "@economypub",
+  "theme": {"bg": "#3A34D2", "ink": "#FFFFFF", "accent": "#5CF2E2", "card": "#1C1868"},
+  "music": "bright",
+  "scenes": [
+    {
+      "blocks": [
+        {"type": "label", "text": "삼성자산운용 FunETF"},
+        {"type": "headline", "text": "가입만 해도 [5천원]", "size": 140},
+        {"type": "text", "text": "배민 상품권 전원 증정", "size": 80},
+        {"type": "photo", "src": "event.jpg", "width": 620},
+        {"type": "pill", "text": "11/1(일) ~ 11/30(월)", "size": 50}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "조건 ① 대상"},
+        {"type": "headline", "text": "[신규] 회원만", "size": 150},
+        {"type": "card", "lines": ["FunETF에 처음 가입하는 분", "[기존 회원은 참여 불가]"], "size": 58}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "조건 ② 꼭 동의"},
+        {"type": "headline", "text": "마케팅 [문자] 동의", "size": 120},
+        {"type": "card", "lines": ["경품을 받으려면", "마케팅 문자 수신 동의 [필수]"], "size": 58}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "받는 방법"},
+        {"type": "headline", "text": "[12월 말] 발송", "size": 140},
+        {"type": "card", "lines": ["당첨 발표 없이", "가입 때 넣은 휴대폰 번호로", "모바일 기프티콘"], "size": 56},
+        {"type": "pill", "text": "앱 설치 후 가입 · PC 가입도 가능", "size": 44}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "이건 꼭 확인"},
+        {"type": "headline", "text": "[제외] 대상", "size": 150},
+        {"type": "card", "lines": ["이미 조건을 채운 고객", "당첨 고객", "[일정 변경·중단 가능]"], "size": 56}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "정리"},
+        {"type": "headline", "text": "참여 전 [3가지]", "size": 140},
+        {"type": "card", "lines": ["① 신규 회원인지", "② 마케팅 문자 동의", "③ 휴대폰 번호 정확히"], "size": 60},
+        {"type": "pill", "text": "자세한 정리 · 네이버 블로그 '경제주막'", "size": 42, "style": "accent"}
+      ]
+    }
+  ]
+}
