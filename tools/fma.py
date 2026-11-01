@@ -324,7 +324,7 @@ def write_credits(tracks: list[dict]) -> None:
              "| 파일 | 곡 | 작곡가 | 라이선스 | 편집 | 원곡 |", "|---|---|---|---|---|---|"]
     for t in tracks:
         lic = t["license"].replace("CC-BY", "CC BY")
-        lines.append(f"| `{t['file']}` | {t['title']} | {t['artist']} | [{lic}]({LICENSE_URLS.get(t['license'], '')}) "
+        lines.append(f"| `music/{t['file']}` | {t['title']} | {t['artist']} | [{lic}]({LICENSE_URLS.get(t['license'], '')}) "
                      f"| {t['start']:g}초부터 {t['seconds']}초 발췌, 음량 조정 | {t['url']} |")
     (ROOT / "music" / "CREDITS.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
