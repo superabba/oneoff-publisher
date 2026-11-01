@@ -108,8 +108,8 @@ def publish(spec: Spec, platforms: list[str] | None = None, publishers=None, hos
         if pub.name in meta.get("posts", {}):
             log.info("%s: 이미 게시됨, 건너뜀", pub.name)
             continue
-        if pub.name == "threads":
-            text = with_credit(spec.threads, folder, THREADS_MAX)
+        if pub.name == "threads":  # 스레드는 사진 슬라이드라 음악이 없다 → 출처 표기 없음
+            text = spec.threads[:THREADS_MAX]
         else:
             text = with_credit(spec.caption, folder, IG_CAPTION_MAX)
         try:

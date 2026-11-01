@@ -87,12 +87,17 @@ def test_publish_appends_music_credit(post):
     line = bgm.credit(TRACK)
     (post / "music.json").write_text(json.dumps({"credit": line}, ensure_ascii=False), encoding="utf-8")
     s = specmod.load(post)
-    s.threads = "가" * 495
     reels, threads = FakePub("reels", needs_video=True), FakePub("threads")
     publish(s, publishers=[reels, threads], host=FakeHost())
     assert reels.seen[0][1] == f"{s.caption}\n\n{line}"
-    text = threads.seen[0][1]
-    assert len(text) <= 500 and text.endswith(line) and "…" in text  # 넘치면 본문을 줄이고 표기는 지킨다
+    assert threads.seen[0][1] == s.threads  # 스레드는 사진 슬라이드라 음악 출처를 붙이지 않는다
+
+    s.caption = "가" * 2190  # 넘치면 본문을 줄이고 표기는 지킨다
+    reels2 = FakePub("reels", needs_video=True)
+    (post / "published.json").unlink()
+    publish(s, publishers=[reels2], host=FakeHost())
+    text = reels2.seen[0][1]
+    assert len(text) <= 2200 and text.endswith(line) and "…" in text
 
 
 @pytest.mark.parametrize("mood", specmod.MUSIC_MOODS)

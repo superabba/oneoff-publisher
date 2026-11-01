@@ -111,8 +111,8 @@ GitHub에서: Actions → **일회성 발행** → Run workflow → `post`에 �
 
 - 곡을 직접 고르려면 `"music_track": "bright/xxx.m4a"` (`music/library.json`의 `file`), 합성을 원하면 `"music_track": "synth"`.
 - `python -m oneoff check`가 어떤 분위기·곡으로 정해졌는지와 출처 표기를 보여 준다.
-- **CC BY 곡은 출처 표기가 필요하다.** `render`가 `music.json`에 어떤 곡을 썼는지 남기고, `publish`가 릴스·쇼츠 설명과
-  스레드 글 끝에 `🎵 제목 - 작곡가 (CC BY 4.0, 편집) 곡 주소` 한 줄을 붙인다 (넘치면 본문 끝을 줄임).
+- **CC BY 곡은 출처 표기가 필요하다.** `render`가 `music.json`에 어떤 곡을 썼는지 남기고, `publish`가 릴스·쇼츠 설명 끝에
+  `🎵 제목 - 작곡가 (CC BY 4.0, 편집) 곡 주소` 한 줄을 붙인다 (넘치면 본문 끝을 줄임). 스레드는 사진 슬라이드라 음악이 없으니 붙이지 않는다.
   네이버 클립은 Uplika로 따로 올리므로 설명에 같은 줄을 직접 넣는다. CC0·퍼블릭 도메인 곡은 표기가 필요 없다.
 
 ### 곡 라이브러리에 곡 넣기 (`tools/fma.py`)

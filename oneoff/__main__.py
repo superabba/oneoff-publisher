@@ -32,9 +32,9 @@ def cmd_check(a) -> int:
     print(f"  배경음악 {mood}{auto}: {what}")
     line = credit(track)
     if line:
-        print(f"  출처 표기(캡션·스레드 끝에 자동으로 붙음): {line}")
-        if len(s.threads) + len(line) + 2 > specmod.THREADS_MAX:
-            warns.append(f"스레드 글 + 출처 표기가 {specmod.THREADS_MAX}자를 넘어 본문 끝이 잘립니다")
+        print(f"  출처 표기(릴스·쇼츠 설명 끝에 자동으로 붙음, 스레드는 음악이 없어 제외): {line}")
+        if len(s.caption) + len(line) + 2 > specmod.IG_CAPTION_MAX:
+            warns.append(f"캡션 + 출처 표기가 {specmod.IG_CAPTION_MAX}자를 넘어 본문 끝이 잘립니다")
     for w in warns:
         print(f"  경고: {w}")
     return 0
