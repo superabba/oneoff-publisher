@@ -36,7 +36,7 @@ oneoff/            코드
   youtube.py       유튜브 업로드        ├ 카드뉴스봇에서 그대로 복사
   hosting.py       공개 URL 만들기      │
   music.py         잔잔한 배경음악 합성  ┘
-music/             배경음악 라이브러리 (library.json + <분위기>/*.m4a, Free Music Archive의 CC0·CC BY 연주곡)
+music/             배경음악 라이브러리 (library.json + <분위기>/*.m4a + CREDITS.md, Free Music Archive의 CC0·CC BY 연주곡)
 tools/fma.py       라이브러리에 넣을 곡 찾기·받기·넣기 (이 PC에서만, pyarrow·huggingface_hub 필요)
 fonts/             Pretendard (OFL)
 examples/          예시 게시물 (조이모바일 알뜰폰 특가)
@@ -130,6 +130,9 @@ python tools/fma.py add .cache/fma_tracks/173-000-....mp3 --mood calm   # 70초 
 
 `fetch`는 parquet 안에서 곡 100개가 하나로 압축된 덩어리를 앞에서부터 그 곡까지만 받아 푼다 (앞쪽 곡일수록 빠름).
 `add`는 인트로가 조용하면 소리가 커지는 지점부터 자른다 (`--start`로 직접 지정 가능). **넣기 전에 꼭 들어 본다.**
+`add`할 때마다 `music/CREDITS.md`(곡별 출처·라이선스·편집 내용)도 다시 쓴다. 공개 저장소에 발췌본을 두므로 지우지 않는다.
+
+지금 라이브러리: 분위기마다 5곡씩 25곡 (CC0 1곡, CC BY 3.0 14곡, CC BY 4.0 10곡). 목록은 `music/CREDITS.md`.
 
 ## 처음 한 번 설정
 
