@@ -1,0 +1,60 @@
+{
+  "id": "20261101-pepero-100",
+  "title": "신한 SOL트래블 체크로 빼빼로아몬드 100원, 참여 전 꼭 볼 조건 정리",
+  "caption": "빼빼로아몬드 100원? 🍫\n신한카드 'SOL트래블 체크'로 CU에서 결제하면 롯데 빼빼로아몬드가 100원 특가예요. 안내 화면 기준으로 조건을 정리했어요.\n\n✔ 기간: 11/1(일) ~ 11/10(화)\n✔ 포켓CU 멤버십QR 스캔 후 결제해야 적용\n✔ 기간 내 3회, 1회 최대 1개 (1회 할인한도 최대 1,900원)\n\n⚠ 이런 점은 확인하세요\n· 준비 수량 소진 시 조기종료 (선착순)\n· CU 오프라인 점포만, 일부 특수매장 제외\n· 다른 결제수단과 복합 결제 불가\n· 대상카드는 SOL트래블 체크·SOL트래블J 체크 (트립앤샵·트립앤J는 아님)\n\n자세한 정리는 네이버 블로그 '경제주막'에 올려뒀어요.\n※ 안내 화면 기준 정리 · 참여 전 공식 안내에서 꼭 확인하세요\n\n#빼빼로 #빼빼로아몬드 #CU편의점 #신한카드 #SOL트래블체크 #편의점할인 #100원딜 #짠테크 #포켓CU #편의점꿀팁",
+  "threads": "빼빼로아몬드 100원, 조건부터 확인하세요.\n\n신한 SOL트래블 체크로 CU 결제 (11/1~11/10)\n· 포켓CU 멤버십QR 스캔 후 결제\n· 기간 내 3회, 1회 최대 1개\n· 선착순, 소진 시 조기종료\n· 타 결제수단과 복합 결제 불가\n\n#빼빼로 #편의점할인",
+  "platforms": ["reels", "threads", "youtube"],
+  "handle": "@economypub",
+  "theme": {"bg": "#FFD60A", "ink": "#111111", "accent": "#E22028", "card": "#FFFFFF"},
+  "music": "bright",
+  "scenes": [
+    {
+      "blocks": [
+        {"type": "label", "text": "신한 SOL트래블 체크 × CU"},
+        {"type": "headline", "text": "빼빼로 [100원]", "size": 150},
+        {"type": "text", "text": "진짜 되는 조건은?", "size": 84},
+        {"type": "photo", "src": "product.jpg", "width": 760},
+        {"type": "pill", "text": "11/1(일) ~ 11/10(화)", "size": 50}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "조건 ① 결제수단"},
+        {"type": "headline", "text": "SOL트래블 [체크]", "size": 120},
+        {"type": "card", "lines": ["실물카드 · 삼성페이", "신한 슈퍼SOL · SOL페이", "[타 결제수단과 복합 불가]"], "size": 56},
+        {"type": "pill", "text": "대상: SOL트래블 체크 · 트래블J 체크", "size": 42}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "조건 ② 결제 전에"},
+        {"type": "headline", "text": "[포켓CU] 멤버십QR", "size": 120},
+        {"type": "card", "lines": ["결제 전 QR 스캔", "키핑 발급 스캔과 별개로", "[추가 1회 스캔]"], "size": 56}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "조건 ③ 횟수"},
+        {"type": "headline", "text": "기간 내 [3회]", "size": 150},
+        {"type": "headline", "text": "1회 최대 1개", "size": 120},
+        {"type": "pill", "text": "1회 할인한도 최대 1,900원", "size": 50}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "이건 꼭 확인"},
+        {"type": "headline", "text": "[선착순]", "size": 180},
+        {"type": "card", "lines": ["준비 수량 소진 시 조기종료", "CU 오프라인 점포만", "[일부 특수매장 제외]"], "size": 54},
+        {"type": "text", "text": "다른 할인·쿠폰과 겹치면 안 될 수 있어요", "size": 50}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "정리"},
+        {"type": "headline", "text": "참여 전 [3가지]", "size": 140},
+        {"type": "card", "lines": ["① 대상 카드인지", "② 결제 전 포켓CU QR", "③ 재고·매장 확인"], "size": 60},
+        {"type": "pill", "text": "자세한 정리 · 네이버 블로그 '경제주막'", "size": 42, "style": "accent"}
+      ]
+    }
+  ]
+}
