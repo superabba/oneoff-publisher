@@ -47,7 +47,9 @@ description: 주제와 사진(이벤트·특가·혜택 캡처)을 주며 경제
 
 ### 3. 블로그 글 → 네이버 발행
 - 구성: 도입 2~3문장 → 사진 → `## 한눈에 보기` 표 → `## 체크 ①②③` → 일상 비유 하나 → `## 가입(참여) 전 체크리스트`
-  → `## 한 줄 정리` (인용). '이 글에서 확인하지 못한 것' 절은 넣지 않는다. 해요체, 과장 금지.
+  → `## 한 줄 정리` (인용). '이 글에서 확인하지 못한 것' 절은 넣지 않는다.
+  **글 맨 끝(한 줄 정리 다음)에 사용자가 준 사진 원본을 자르지 않은 그대로 전부 다시 넣는다** (사용자 요청, 2026-11-02).
+  본문 중간에 쓴 사진도 원본이면 끝에 한 번 더 넣는다. 원본 파일은 `posts/<id>/`에 올려 두고 `media_from_url`로 올려 `![원본 사진](media:<id>)`로 넣는다. 해요체, 과장 금지.
 - 사진은 data 브랜치에 먼저 push 한 뒤 raw URL(`https://raw.githubusercontent.com/superabba/oneoff-publisher/data/posts/<id>/<file>`)을
   Uplika `media_from_url`(workspaceId 경제주막)로 올리고, 본문에 `![설명](media:<id>)`로 넣는다.
 - Uplika `publish` (workspaceId, `conn_4229412d79bc99ce`, options.naver_blog: title, categoryId "2", tags 10~12개,
