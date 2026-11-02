@@ -1,0 +1,18 @@
+{
+  "mood": "bright",
+  "source": "library",
+  "track": {
+    "file": "bright/revolution-void-how-exciting.m4a",
+    "mood": "bright",
+    "title": "How Exciting",
+    "artist": "Revolution Void",
+    "license": "CC-BY 3.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Revolution_Void/The_Politics_of_Desire/revolution_void_-_07_-_how_exciting",
+    "artist_url": "http://freemusicarchive.org/music/Revolution_Void/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 231:101",
+    "start": 9.5,
+    "seconds": 70
+  },
+  "credit": "🎵 How Exciting - Revolution Void (CC BY 3.0, 편집) http://freemusicarchive.org/music/Revolution_Void/The_Politics_of_Desire/revolution_void_-_07_-_how_exciting"
+}
