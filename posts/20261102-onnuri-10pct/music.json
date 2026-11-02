@@ -1,0 +1,18 @@
+{
+  "mood": "upbeat",
+  "source": "library",
+  "track": {
+    "file": "upbeat/revolution-void-effects-of-elevation.m4a",
+    "mood": "upbeat",
+    "title": "Effects of Elevation",
+    "artist": "Revolution Void",
+    "license": "CC-BY 3.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Revolution_Void/Effects_of_Elevation/Revolution_Void__Effects_of_Elevation",
+    "artist_url": "http://freemusicarchive.org/music/Revolution_Void/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 231:64",
+    "start": 60.5,
+    "seconds": 70
+  },
+  "credit": "🎵 Effects of Elevation - Revolution Void (CC BY 3.0, 편집) http://freemusicarchive.org/music/Revolution_Void/Effects_of_Elevation/Revolution_Void__Effects_of_Elevation"
+}
