@@ -1,0 +1,58 @@
+{
+  "id": "20261104-ispack-150gb",
+  "title": "아이즈모바일 LG U+ 아이즈팩 150GB 월 23,900원 평생할인, 혜택과 할인 유지 조건",
+  "caption": "LG U+ 망에서 150GB를 월 23,900원에 쓸 수 있어요 📱\n아이즈모바일 '아이즈팩 150GB+' 요금제를 정리했어요.\n\n✔ 평생할인 월 23,900원 (정가 62,700원 표기)\n✔ 데이터 소진 후 5Mbps 속도제한 무제한\n✔ 부가통화 300분, 핫스팟 10GB까지\n✔ 월 최대 24,900원 혜택 (CU 10%, 뉴스콘텐츠, 교보문고 sam, 인터넷·TV 결합)\n\n⚠ 할인 유지 조건\n· 가입 후 90일 안에 음성 15분 또는 데이터 100MB 이상 사용\n· 요금제 변경·명의 변경 시 프로모션 할인 중단\n\n자세한 정리는 네이버 블로그 '경제주막'에 올려뒀어요.\n※ 요금제 안내 화면 기준 정리 · 가입 전 공식 페이지에서 꼭 확인하세요\n\n#아이즈모바일 #아이즈팩 #알뜰폰 #LGU플러스 #150GB #5G요금제 #평생할인 #교보문고sam #짠테크",
+  "threads": "아이즈팩 150GB, 월 23,900원 평생할인 (LG U+ 망)\n\n· 데이터 소진 후 5Mbps 무제한\n· 월 최대 24,900원 혜택 (CU 10%, sam, 뉴스 구독)\n· 가입 후 90일 안에 음성 15분 또는 데이터 100MB 이상 써야 할인 유지\n\n#아이즈모바일 #알뜰폰",
+  "platforms": ["reels", "threads", "youtube"],
+  "handle": "@economypub",
+  "theme": {"bg": "#F3F5FF", "ink": "#0E1B4D", "accent": "#3A2FE0", "card": "#FFFFFF"},
+  "music": "bright",
+  "scenes": [
+    {
+      "blocks": [
+        {"type": "label", "text": "아이즈모바일 · LG U+ 망"},
+        {"type": "headline", "text": "월 [23,900원]", "size": 150},
+        {"type": "text", "text": "150GB+ · 평생할인", "size": 70},
+        {"type": "photo", "src": "plan.jpg", "width": 700},
+        {"type": "pill", "text": "데이터 소진 후 5Mbps 무제한", "size": 44}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "가격"},
+        {"type": "headline", "text": "정가 [62,700원]", "size": 120},
+        {"type": "photo", "src": "price.jpg", "width": 640},
+        {"type": "card", "lines": ["부가통화 300분", "핫스팟 10GB까지"], "size": 52}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "혜택"},
+        {"type": "headline", "text": "월 최대 [24,900원]", "size": 110},
+        {"type": "photo", "src": "benefits.jpg", "width": 660}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "이건 꼭 확인"},
+        {"type": "headline", "text": "[90일] 안에 사용", "size": 130},
+        {"type": "card", "lines": ["음성 15분 또는", "데이터 100MB 이상 사용해야", "할인 혜택이 유지돼요"], "size": 54}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "바꾸면 안 되는 것"},
+        {"type": "headline", "text": "요금제·명의 [변경] 시", "size": 110},
+        {"type": "card", "lines": ["프로모션 할인 중단", "요금제 원복해도 할인 미적용"], "size": 54}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "정리"},
+        {"type": "headline", "text": "가입 전 [3가지]", "size": 140},
+        {"type": "card", "lines": ["① 신규·번호이동 여부", "② 90일 안 사용 조건", "③ 요금제·명의 변경 계획"], "size": 56},
+        {"type": "pill", "text": "자세한 정리 · 네이버 블로그 '경제주막'", "size": 42, "style": "accent"}
+      ]
+    }
+  ]
+}
