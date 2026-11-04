@@ -32,7 +32,7 @@ ENTER_S = 0.42  # 블록 하나가 등장하는 시간
 STAGGER_S = 0.13  # 다음 블록이 등장하기까지 간격
 FIRST_DELAY_S = 0.06
 ZOOM = 0.035  # 장면 동안 다가오는 정도 (3.5%)
-BAR_Y, BAR_H, BAR_X = 150, 10, 60
+BAR_Y, BAR_H, BAR_X = 300, 10, 60  # 진행 바도 상단 UI 아래(안전 영역 안)
 
 
 def ffmpeg() -> str:

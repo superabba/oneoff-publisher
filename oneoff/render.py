@@ -41,7 +41,9 @@ class Canvas:
     max_w: int  # 블록 최대 너비 (오른쪽 버튼 피하기)
 
 
-VIDEO = Canvas("video", 1920, 250, 1590, 940)
+# 릴스·쇼츠는 위(상단 UI)·아래(캡션 UI) 약 290/390px가 가려지고, 프로필 격자 미리보기도 3:4·4:5로 위아래를 잘라 낸다.
+# 그래서 진행 바·내용·계정명 모두 y 285~1535 안에 둔다 (진행 바 300, 내용 350~1470, 계정명 1480~).
+VIDEO = Canvas("video", 1920, 350, 1470, 940)
 SLIDE = Canvas("slide", 1350, 90, 1225, 960)
 
 
@@ -249,7 +251,7 @@ def draw_handle(im: Image.Image, spec: Spec, cv: Canvas) -> None:
         return
     d = ImageDraw.Draw(im)
     f = font(36, "Bold")
-    y = cv.bottom + (cv.height - cv.bottom) // 2 - 26 if cv is VIDEO else cv.height - 82
+    y = cv.bottom + 12 if cv is VIDEO else cv.height - 82  # 영상은 하단 UI에 가려지지 않게 내용 바로 아래
     d.text(((W - f.getlength(spec.handle)) / 2, y), spec.handle, font=f, fill=spec.color("ink"))
 
 
