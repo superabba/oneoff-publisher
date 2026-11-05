@@ -1,0 +1,58 @@
+{
+  "id": "20261105-isemobile-10won",
+  "title": "아이즈모바일 SKT [S]그란데 첫 18개월 월 10원, 가입 전 꼭 볼 조건 정리",
+  "caption": "월 10원 알뜰폰, 조건은? 📱\n아이즈모바일 SKT망 [S]그란데(200분/6GB)는 첫 18개월간 월 10원이에요. 이후에는 15,900원이에요.\n\n✔ 신규가입·번호이동 고객 대상\n✔ 가입 후 90일 안에 음성 15분 또는 데이터 100MB 이상 사용해야 할인 유지\n✔ 데이터 6GB · 통화 200분 · 문자 100건\n\n⚠ 6GB를 넘기면\n· 초과 3GB 전까지 1MB당 22.53원 (최대 19,800원)\n· 3GB를 넘으면 200Kbps로 속도 제한\n· 명의변경·요금제 변경 시 할인 혜택이 중단돼요\n\n자세한 정리는 네이버 블로그 '경제주막'에 올려뒀어요.\n※ 가입 전 공식 안내에서 꼭 확인하세요\n\n#아이즈모바일 #알뜰폰 #알뜰폰요금제 #알뜰폰특가 #SKT알뜰폰 #월10원 #통신비절약 #그란데요금제 #6GB요금제 #짠테크",
+  "threads": "월 10원 알뜰폰, 조건부터 확인하세요.\n\n아이즈모바일 [S]그란데 (SKT망)\n· 6GB / 200분 / 문자 100건\n· 첫 18개월 월 10원, 이후 15,900원\n· 신규가입·번호이동만\n· 90일 안에 음성 15분 또는 데이터 100MB 사용\n\n데이터 초과는 1MB당 22.53원(최대 19,800원), 3GB를 넘으면 200Kbps예요.\n\n#알뜰폰 #통신비절약",
+  "platforms": ["reels", "threads", "youtube"],
+  "handle": "@economypub",
+  "theme": {"bg": "#E7E4FF", "ink": "#17113D", "accent": "#4326F5", "card": "#FFFFFF"},
+  "music": "bright",
+  "scenes": [
+    {
+      "blocks": [
+        {"type": "label", "text": "아이즈모바일 · SKT망"},
+        {"type": "headline", "text": "첫 18개월 [월 10원]", "size": 120},
+        {"type": "text", "text": "그란데 200분 · 6GB", "size": 70},
+        {"type": "photo", "src": "cover.jpg", "width": 640},
+        {"type": "pill", "text": "이후 월 15,900원", "size": 50}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "할인 조건 ①"},
+        {"type": "headline", "text": "[90일] 안에", "size": 150},
+        {"type": "card", "lines": ["음성 15분 또는", "데이터 100MB 이상 사용", "[안 하면 할인이 안 될 수 있어요]"], "size": 54},
+        {"type": "pill", "text": "신규가입 · 번호이동 대상", "size": 46}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "할인 조건 ②"},
+        {"type": "headline", "text": "6GB 다 쓰면?", "size": 120},
+        {"type": "card", "lines": ["1MB당 22.53원 (최대 19,800원)", "초과 3GB를 넘으면", "[통신 속도 200Kbps 제한]"], "size": 52}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "통화 · 문자"},
+        {"type": "headline", "text": "[200분] · 100건", "size": 130},
+        {"type": "card", "lines": ["영상통화는 1초에 1.66초 차감", "소진 후 음성통화 1초당 1.98원", "[LMS · MMS는 별도 과금]"], "size": 50}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "알아두세요"},
+        {"type": "headline", "text": "[일할] 계산", "size": 150},
+        {"type": "card", "lines": ["할인 기간은 개통일 기준으로 계산", "명의변경 · 요금제 변경 시 [할인 중단]", "원래 요금제로 돌아가도 할인 안 돼요"], "size": 48}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "정리"},
+        {"type": "headline", "text": "가입 전 [3가지]", "size": 140},
+        {"type": "card", "lines": ["① 신규가입 · 번호이동인지", "② 90일 안에 사용할 수 있는지", "③ 데이터 초과 과금 알고 있는지"], "size": 54},
+        {"type": "pill", "text": "자세한 정리 · 네이버 블로그 '경제주막'", "size": 42, "style": "accent"}
+      ]
+    }
+  ]
+}

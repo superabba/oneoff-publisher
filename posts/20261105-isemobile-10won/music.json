@@ -1,0 +1,18 @@
+{
+  "mood": "bright",
+  "source": "library",
+  "track": {
+    "file": "bright/josh-woodward-under-the-stairs.m4a",
+    "mood": "bright",
+    "title": "Under the Stairs",
+    "artist": "Josh Woodward",
+    "license": "CC-BY 3.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Josh_Woodward/Breadcrumbs/JoshWoodward-Breadcrumbs-05-UnderTheStairs",
+    "artist_url": "http://freemusicarchive.org/music/Josh_Woodward/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 566:32",
+    "start": 17.5,
+    "seconds": 70
+  },
+  "credit": "🎵 Under the Stairs - Josh Woodward (CC BY 3.0, 편집) http://freemusicarchive.org/music/Josh_Woodward/Breadcrumbs/JoshWoodward-Breadcrumbs-05-UnderTheStairs"
+}
