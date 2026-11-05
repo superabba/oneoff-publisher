@@ -1,0 +1,29 @@
+{
+  "image_urls": [
+    "https://raw.githubusercontent.com/superabba/oneoff-publisher/data/media/7467f7be/slide_01.jpg",
+    "https://raw.githubusercontent.com/superabba/oneoff-publisher/data/media/7467f7be/slide_02.jpg",
+    "https://raw.githubusercontent.com/superabba/oneoff-publisher/data/media/7467f7be/slide_03.jpg",
+    "https://raw.githubusercontent.com/superabba/oneoff-publisher/data/media/7467f7be/slide_04.jpg",
+    "https://raw.githubusercontent.com/superabba/oneoff-publisher/data/media/7467f7be/slide_05.jpg",
+    "https://raw.githubusercontent.com/superabba/oneoff-publisher/data/media/7467f7be/slide_06.jpg"
+  ],
+  "video_urls": [
+    "https://cdn.jsdelivr.net/gh/superabba/oneoff-publisher@4440dfeef01fb4975f211d6e1fbc2d5acc3428b9/media/7467f7be/reel.mp4",
+    "https://raw.githubusercontent.com/superabba/oneoff-publisher/data/media/7467f7be/reel.mp4"
+  ],
+  "reel_cover_url": "https://raw.githubusercontent.com/superabba/oneoff-publisher/data/media/7467f7be/reel_cover.jpg",
+  "posts": {
+    "reels": {
+      "media_id": "18343880434279008",
+      "permalink": "https://www.instagram.com/reel/DfWa0r6ttOs/"
+    },
+    "threads": {
+      "media_id": "17979910209136175",
+      "permalink": "https://www.threads.com/@economypub/post/DfWa8tYFlKP"
+    },
+    "youtube": {
+      "media_id": "sLllDBCQk7g",
+      "permalink": "https://youtube.com/shorts/sLllDBCQk7g"
+    }
+  }
+}
