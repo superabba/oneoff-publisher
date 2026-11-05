@@ -79,6 +79,8 @@ description: 주제와 사진(이벤트·특가·혜택 캡처)을 주며 경제
   - 원본 해상도가 낮으면(가로 1,000px 미만) 늘려서 넣지 않고 그대로 넣는다. 더 큰 원본이 필요하면 사용자에게 파일로 다시 받을 수 있는지 묻는다.
 - 사진은 data 브랜치에 먼저 push 한 뒤 raw URL(`https://raw.githubusercontent.com/superabba/oneoff-publisher/data/posts/<id>/<file>`)을
   Uplika `media_from_url`(workspaceId 경제주막)로 올리고, 본문에 `![설명](media:<id>)`로 넣는다.
+- **태그·제목·키워드의 한글은 유니코드 코드값(백슬래시 u + 숫자)으로 쓰지 않고 한글 그대로 쓴다.** 코드값을 잘못 적으면 글자가 바뀐다 (실제로 '알뜰폰'이 '알뜩폰'으로 들어간 적이 있다).
+  발행 직후 결과의 `options.naver_blog.tags`를 눈으로 다시 읽어 오타를 확인한다.
 - Uplika `publish` (workspaceId, `conn_4229412d79bc99ce`, options.naver_blog: title, categoryId "2", tags 10~12개,
   openType public, layout "as-is", seoKeywords), `wait: true`.
 - 확장이 꺼져 있어 대기열에 들어가면 **발행됐다고 말하지 않는다.** userMessage를 그대로 전하고,
