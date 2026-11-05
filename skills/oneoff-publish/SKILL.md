@@ -76,6 +76,12 @@ description: 주제와 사진(이벤트·특가·혜택 캡처)을 주며 경제
   - **끝에 넣는 원본 사진은 문서 너비로** 넣는다 (사용자 요청, 2026-11-04). 사진 줄마다 `![원본 사진](media:<id>){.fit}`처럼 `{.fit}`을 붙이고,
     `options.naver_blog.imageSize`도 `fit`으로 준다. 사진이 작게 줄어들지 않게 한다.
   - **원본 사진 앞에 설명 문구(예: '화면 원본 전체', '요금제 상세 화면 캡처 원본 전체예요' 같은 안내)를 쓰지 않는다.** 한 줄 정리 바로 다음에 사진만 둔다 (사용자 요청, 2026-11-02).
+  - **세로가 4,000px보다 긴 원본은 한 장으로 올리지 않고, 이어지는 PNG 조각으로 나눠서 끝에 넣는다** (사용자 선택, 2026-11-05).
+    이유: 네이버는 Uplika 확장으로 올린 긴 JPEG(대략 세로 6,000px 이상)를 높이 1,600px로 줄여 보여 준다 (2,628x20,217px → 208x1,600px, 글자 못 읽음).
+    같은 파일을 사용자가 편집기에서 직접 올리면 줄지 않는다 (경로 차이, 원인은 확인 못 함). PNG는 줄지 않지만 2MB를 넘으면 네이버가 JPEG로 바꿔 다시 줄어든다.
+    방법: `python tools/slice_original.py <원본> <폴더> --prefix orig_1` (조각당 PNG 1.8MB 안, 화소는 그대로). 나온 `orig_1_01.png`, `orig_1_02.png`…를
+    순서대로 `posts/<id>/`에 넣고 Uplika에 올려 한 줄 정리 다음에 **붙여서** 넣는다 (`{.fit}`, 설명 문구 없음). 세로가 4,000px 이하인 원본은 지금처럼 JPEG 그대로.
+    올린 뒤 `PostView` 주소(`blog.naver.com/PostView.naver?blogId=economypub&logNo=<번호>`)의 이미지 주소에 `?type=w2000`을 붙여 받아 보면 크기가 줄었는지 확인할 수 있다.
   - 원본 해상도가 낮으면(가로 1,000px 미만) 늘려서 넣지 않고 그대로 넣는다. 더 큰 원본이 필요하면 사용자에게 파일로 다시 받을 수 있는지 묻는다.
 - 사진은 data 브랜치에 먼저 push 한 뒤 raw URL(`https://raw.githubusercontent.com/superabba/oneoff-publisher/data/posts/<id>/<file>`)을
   Uplika `media_from_url`(workspaceId 경제주막)로 올리고, 본문에 `![설명](media:<id>)`로 넣는다.

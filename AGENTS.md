@@ -26,6 +26,7 @@
 9. 블로그 글 맨 끝에는 사용자가 준 **사진 원본**(자르지 않은 것)을 전부 넣는다 (사용자 요청, 2026-11-02).
    원본은 받은 파일을 **다시 저장하지 않고 그대로 복사**해 넣고(화질 유지), 한 줄 정리 바로 다음에 설명 문구 없이 사진만 둔다.
    사진은 **문서 너비**(`{.fit}`)로 넣는다 (사용자 요청, 2026-11-04).
+   세로 4,000px 넘는 긴 원본은 `tools/slice_original.py`로 이어지는 PNG 조각으로 나눠 붙여 넣는다 (네이버가 긴 JPEG를 1,600px로 줄이기 때문, 사용자 선택 2026-11-05).
 10. 사진에 캐릭터·상품·카드·키비주얼 같은 **상징적인 이미지**가 있으면 잘라 내서 영상(첫·마지막 장면)과 블로그에 같이 쓴다.
     글자 캡처만 쓰지 않는다 (사용자 요청, 2026-11-02).
 11. 글 말투는 **글쓴이가 내용을 다 알고 독자에게 설명하는 식**으로 쓴다. "안내 화면에 적혀 있어요"처럼 사진을 설명하는 말투는 쓰지 않는다
@@ -55,6 +56,7 @@
 | `oneoff/video.py` | 등장 애니메이션·줌·진행 바 → 장면별 mp4 → concat → 배경음악 |
 | `oneoff/bgm.py` | 분위기별 배경음악 (calm·warm·bright·upbeat·tense, auto는 원고 단어로 선택). 곡 라이브러리 → 없으면 합성(calm은 `music.py` 그대로). CC BY 출처 표기 |
 | `music/` | 배경음악 라이브러리: `library.json` + `<분위기>/*.m4a` (70초 발췌, −16 LUFS) |
+| `tools/slice_original.py` | 긴 캡처 원본을 이어지는 PNG 조각(조각당 1.8MB 안)으로 나눔. 블로그 끝 원본용 |
 | `tools/fma.py` | Free Music Archive(HF 데이터셋)에서 라이브러리 곡 찾기(scan)·받기(fetch)·넣기(add). 이 PC에서만 실행 |
 | `oneoff/publish.py` | 게시 (DB 없이 `published.json`·`log.jsonl`에 기록) |
 | `oneoff/publishers.py`, `youtube.py`, `hosting.py`, `music.py` | 카드뉴스봇에서 **그대로 복사** (원본 `my-site/cardnews-bot/cardbot/`) |
