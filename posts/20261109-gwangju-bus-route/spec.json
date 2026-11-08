@@ -1,0 +1,57 @@
+{
+  "id": "20261109-gwangju-bus-route",
+  "title": "2026.10.31 광주권 시내버스 노선 개편, 노선 103개→115개와 확인 방법 정리",
+  "caption": "2026년 10월 31일(토)부터 광주권 시내버스 노선이 새롭게 바뀌어요 🚌\n광주권 시내버스 노선 개편 안내를 기준으로 핵심만 정리했어요.\n\n✔ 노선 수 103개 → 115개\n✔ 평균 배차간격 4.5분 단축\n✔ 노선번호 단순화 (기존 지역명 삭제)\n✔ 직행·급행 강화, 노선 투입 지역 46.2km 확대\n\n⚠ 변경 노선은 직접 확인하세요\n· QR코드 또는 버스운행정보(BIS, bus.gwangju.go.kr)에서 확인\n· 2026.10.16.(금)부터 확인 가능\n· 문의: 광주청사 교통정책과 062-613-4991~4\n\n자세한 정리는 네이버 블로그 '경제주막'에 올려뒀어요.\n※ 노선 개편 안내 기준 정리 · 세부 노선은 공식 안내에서 꼭 확인하세요\n\n#광주시내버스 #시내버스노선 #광주버스 #버스노선변경 #BIS #대중교통 #광주 #생활정보",
+  "threads": "2026.10.31.(토) 광주권 시내버스 노선 개편\n\n· 노선 수 103개 → 115개\n· 평균 배차간격 4.5분 단축\n· 노선번호 단순화 (기존 지역명 삭제)\n· 변경 노선은 BIS(bus.gwangju.go.kr)에서 확인\n\n#광주시내버스 #버스노선변경",
+  "platforms": ["reels", "threads", "youtube"],
+  "handle": "@economypub",
+  "theme": {"bg": "#FFFFFF", "ink": "#14225C", "accent": "#2F5BD3", "card": "#EEF2FB"},
+  "music": "calm",
+  "scenes": [
+    {
+      "blocks": [
+        {"type": "label", "text": "광주권 시내버스"},
+        {"type": "headline", "text": "노선이 [새롭게] 바뀝니다", "size": 120},
+        {"type": "photo", "src": "bus.jpg", "width": 680},
+        {"type": "pill", "text": "2026.10.31.(토) 적용", "size": 50}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "숫자로 보기"},
+        {"type": "headline", "text": "노선 [103 → 115개]", "size": 130},
+        {"type": "card", "lines": ["노선 수 확대", "평균 배차간격 4.5분 단축", "노선 투입 지역 46.2km 확대"], "size": 52}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "노선번호"},
+        {"type": "headline", "text": "노선번호 [단순화]", "size": 130},
+        {"type": "card", "lines": ["기존 지역명 삭제", "직행·급행 노선 강화"], "size": 56}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "이건 꼭 확인"},
+        {"type": "headline", "text": "변경 노선 [직접 확인]", "size": 120},
+        {"type": "card", "lines": ["QR코드로 확인", "버스운행정보(BIS)", "시 홈페이지"], "size": 56},
+        {"type": "pill", "text": "2026.10.16.(금)부터 확인 가능", "size": 42}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "문의"},
+        {"type": "headline", "text": "교통정책과 [062-613-4991]", "size": 100},
+        {"type": "card", "lines": ["광주청사 교통정책과 (4번까지)", "버스운송사업조합 062-227-8711", "콜센터 062-120"], "size": 50}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "정리"},
+        {"type": "headline", "text": "변경 노선 [3가지]", "size": 130},
+        {"type": "card", "lines": ["① 10.31(토) 적용 여부", "② 노선번호 단순화 확인", "③ BIS·QR로 노선 조회"], "size": 56},
+        {"type": "pill", "text": "자세한 정리 · 네이버 블로그 '경제주막'", "size": 42, "style": "accent"}
+      ]
+    }
+  ]
+}
