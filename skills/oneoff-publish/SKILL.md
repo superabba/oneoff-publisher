@@ -58,6 +58,12 @@ description: 주제와 사진(이벤트·특가·혜택 캡처)을 주며 경제
   - 통짜 원본은 규칙 그대로 한 줄 정리 다음 맨 끝에 (재압축 없이, 문서 너비로).
   - 이미 발행한 글에 나중에 추가할 때는 `update_post`에 전체 본문과 `options`를 다시 넘긴다 (같은 주소 유지).
   - Python으로 한글이 든 파일을 고칠 때는 `PYTHONUTF8=1`을 켠다 (윈도 기본 인코딩이면 글자가 깨져 수정이 안 된다).
+- **사진을 못 받은 정보성 주제(세금·제도·지급 방법 등)는 코드로 그린 일러스트 3장을 블로그에 넣는다** (사용자 결정, 2026-11-09).
+  `python tools/illustrate.py <spec.json> posts/<id>` → `illust_1.png`~`illust_3.png` (1600x900, Pillow로만 그림. 인터넷·API·AI 이미지 생성·비용 없음).
+  spec 형식과 아이콘 종류(calendar·document·calculator·coins·phone·card·chart·passbook·check·warning)는 `tools/illustrate.py` 맨 위 설명을 본다. palette(green·blue·orange·purple)는 주제 분위기로 고른다.
+  배치: 1번은 도입 바로 뒤, 2번은 글 한가운데(핵심 설명 절 뒤), 3번은 체크리스트 앞이나 뒤. 사진처럼 설명 문구 없이 `![설명](media:<id>){.fit}`.
+  **그림 속 글자(제목·부제·label)도 글에 쓰는 사실과 같아야 한다.** 공식 자료로 확인 못 한 숫자·날짜(예: 납부 달, 비율)는 그림에 넣지 않는다.
+  브랜드·실제 상품이 있는 주제에는 쓰지 않고 사용자가 주는 공식 이미지를 쓴다. 영상 캡처(`slide_*.jpg`)는 일러스트가 안 맞을 때만 보조로 쓴다.
 - **사용자가 사진을 주지 않고 글(주제)만 줬을 때도 블로그에는 사진을 넣는다** (사용자 요청, 2026-11-09).
   방법: 먼저 영상을 `render`해서 나온 `slide_01.jpg`~`slide_NN.jpg`(1080x1350, 영상과 같은 디자인)와 `reel_cover.jpg`를 블로그에 쓴다.
   `reel_cover.jpg`(또는 `slide_01.jpg`)를 도입 바로 뒤에, 나머지 슬라이드는 같은 내용을 설명하는 절 뒤에 넣는다 (`![설명](media:<id>){.fit}`, 설명 문구 없이).
