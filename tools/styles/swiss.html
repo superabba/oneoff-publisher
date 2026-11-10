@@ -1,0 +1,51 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Pretendard; font-weight: 100 900; src: url("/fonts/Pretendard-ExtraBold.otf"); }
+  html, body { margin: 0; background: #F2F0EA; }
+  canvas { display: block; }
+</style>
+<canvas id="c" width="1600" height="900"></canvas>
+<script type="module">
+// Swiss Motion Graphics 스타일(lemomo-ai/lemo-opuscar 'swiss-motion')의 문법으로 그린 정지 포스터:
+// 12열 격자, 글꼴 하나, 신호색 하나, 왼쪽 맞춤, 아주 큰 숫자와 작은 주석의 대비.
+// 주소 뒤 ?d=<JSON> → { top, date, big, unit, lead, head, rows:[[번호, 작은 글, 굵은 글] x 3~4], foot }
+const S = JSON.parse(new URLSearchParams(location.search).get('d') || '{}');
+await document.fonts.load('800 100px Pretendard');
+const cv = document.getElementById('c'), g = cv.getContext('2d');
+const PAGE = '#F2F0EA', PAPER = '#FFFFFF', INK = '#141414', SIG = '#FF5A00';
+g.fillStyle = PAGE; g.fillRect(0, 0, 1600, 900);
+const M = 96, GUT = 24, COL = (1600 - 2 * M - 11 * GUT) / 12;
+const cx = i => M + i * (COL + GUT);
+g.strokeStyle = '#E2E0D9'; g.lineWidth = 1;
+for (let i = 0; i < 12; i++) g.strokeRect(cx(i) + .5, 60.5, COL, 780);
+g.fillStyle = PAPER; g.fillRect(cx(7) - 12, 60, 1600 - M + 12 - (cx(7) - 12), 780);
+const txt = (s, x, y, size, color = INK, w = 800, ls = 0) => { g.font = `${w} ${size}px Pretendard`; g.fillStyle = color; g.letterSpacing = ls + 'px'; g.textBaseline = 'alphabetic'; g.fillText(s, x, y); g.letterSpacing = '0px'; };
+txt(S.top || '', cx(0), 112, 24);
+txt(S.date || '', cx(7), 112, 24);
+g.fillStyle = INK; g.fillRect(cx(0), 128, 1600 - 2 * M, 2);
+// 큰 숫자: 글자 수에 따라 크기를 줄여 오른쪽 면과 겹치지 않게 한다
+const big = S.big || '', unit = S.unit || '';
+let size = 360;
+const maxW = cx(7) - 12 - cx(0) - 40;
+const wOf = s => { g.font = `800 ${s}px Pretendard`; g.letterSpacing = '-8px'; const w = g.measureText(big).width + (unit ? g.measureText(unit).width * .53 : 0); g.letterSpacing = '0px'; return w; };
+while (size > 120 && wOf(size) > maxW) size -= 10;
+g.font = `800 ${size}px Pretendard`; g.letterSpacing = '-8px';
+const bw = g.measureText(big).width; g.letterSpacing = '0px';
+txt(big, cx(0) - 14, 540, size, INK, 800, -8);
+txt(unit, cx(0) - 14 + bw + 6, 540, size * .53, SIG, 800, -3);
+g.fillStyle = SIG; g.fillRect(cx(0), 574, COL * 2 + GUT, 16);
+txt(S.lead || '', cx(0), 670, 28, '#6B6A66', 700);
+txt(S.head || '', cx(0), 742, 64, INK, 800, -1.3);
+const rows = (S.rows || []).slice(0, 4), step = rows.length > 3 ? 150 : 190;
+rows.forEach((r, i) => {
+  const y = 190 + i * step;
+  g.fillStyle = INK; g.fillRect(cx(7) + 12, y, cx(12) - cx(7) - 24, 1);
+  txt(r[0], cx(7) + 12, y + 44, 22);
+  txt(r[1], cx(8) + 12, y + 44, 26, '#6B6A66', 700);
+  txt(r[2], cx(8) + 12, y + 104, 48, INK, 800, -1);
+});
+g.fillStyle = INK; g.fillRect(cx(7) + 12, 790, cx(12) - cx(7) - 24, 1);
+txt(S.foot || '', cx(7) + 12, 824, 20, '#6B6A66', 700);
+document.title = 'ready';
+</script>

@@ -1,0 +1,79 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Pretendard; font-weight: 100 900; src: url("/fonts/Pretendard-ExtraBold.otf"); }
+  html, body { margin: 0; background: #F4EEE2; }
+  canvas { display: block; }
+</style>
+<canvas id="c" width="1600" height="900"></canvas>
+<script type="module">
+// Risograph Print 스타일(lemomo-ai/lemo-opuscar 'risograph')의 문법으로 그린 정지 인쇄물:
+// 따뜻한 종이 위에 반투명 잉크 2색(파랑·형광 분홍)을 겹쳐 찍고, 판이 몇 픽셀씩 어긋나며, 망점·핀홀·결이 있다.
+// 주소 뒤 ?d=<JSON> → { head, big, motif:"store"|"coins"|"doc", foot1, foot2 }
+const S = JSON.parse(new URLSearchParams(location.search).get('d') || '{}');
+await document.fonts.load('800 100px Pretendard');
+const W = 1600, H = 900, PAPER = '#F4EEE2';
+const cv = document.getElementById('c'), g = cv.getContext('2d');
+let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+const plates = { blue: { c: mk(), ink: '#0078BF', dx: -3, dy: 2 }, pink: { c: mk(), ink: '#FF48B0', dx: 4, dy: -3 } };
+function dots(density) {
+  const t = mk(), n = 9; t.width = t.height = n * 2; const x = t.getContext('2d'), r = Math.sqrt(density) * n * .7;
+  x.fillStyle = '#000';
+  for (const [cx, cy] of [[n, n], [0, 0], [n * 2, 0], [0, n * 2], [n * 2, n * 2]]) { x.beginPath(); x.arc(cx, cy, r, 0, 6.3); x.fill(); }
+  return g.createPattern(t, 'repeat');
+}
+const P = n => plates[n].c.getContext('2d');
+const solid = (n, fn) => { const x = P(n); x.fillStyle = '#000'; x.strokeStyle = '#000'; fn(x); };
+const tint = (n, d, fn) => { const x = P(n); x.fillStyle = dots(d); fn(x); };
+const ko = (n, fn) => { const x = P(n); x.globalCompositeOperation = 'destination-out'; x.fillStyle = '#000'; fn(x); x.globalCompositeOperation = 'source-over'; };
+const text = (n, s, X, Y, size) => solid(n, x => { x.font = `800 ${size}px Pretendard`; x.letterSpacing = '-2px'; x.fillText(s, X, Y); });
+
+// 큰 원(분홍)
+solid('pink', x => { x.beginPath(); x.arc(1230, 330, 210, 0, 6.3); x.fill(); });
+tint('pink', .55, x => { x.beginPath(); x.arc(1230, 330, 262, 0, 6.3); x.arc(1230, 330, 210, 0, 6.3, true); x.fill(); });
+// 들판
+tint('blue', .32, x => x.fillRect(0, 660, W, 90));
+solid('blue', x => x.fillRect(0, 750, W, 150));
+// 주제 그림
+const MOTIF = {
+  store() {
+    solid('blue', x => { x.fillRect(150, 400, 380, 240); x.beginPath(); x.moveTo(130, 400); x.lineTo(550, 400); x.lineTo(520, 340); x.lineTo(160, 340); x.closePath(); x.fill(); });
+    ko('blue', x => { for (let i = 0; i < 6; i++) x.fillRect(180 + i * 60, 346, 28, 48); x.fillRect(200, 470, 110, 170); x.fillRect(350, 450, 140, 90); });
+    tint('pink', .45, x => x.fillRect(330, 400, 200, 240));
+  },
+  doc() {
+    for (let i = 0; i < 3; i++) solid('blue', x => x.fillRect(170 + i * 22, 360 - i * 18, 330, 280));
+    ko('blue', x => { for (let r = 0; r < 5; r++) x.fillRect(220, 420 + r * 40, r % 2 ? 190 : 250, 14); });
+    tint('pink', .5, x => x.fillRect(170, 590, 354, 50));
+  },
+  coins() {},
+};
+(MOTIF[S.motif] || MOTIF.store)();
+for (let i = 0; i < 4; i++) solid('pink', x => { x.beginPath(); x.ellipse(860, 610 - i * 34, 90, 30, 0, 0, 6.3); x.fill(); });
+solid('blue', x => { x.beginPath(); x.ellipse(860, 610 - 3 * 34 - 4, 70, 22, 0, 0, 6.3); x.fill(); });
+// 글자: 큰 숫자는 두 판으로 어긋나게
+const head = S.head || '', big = S.big || '';
+text('blue', head, 96, 100, 52);
+let bs = 190; { const c = P('blue'); c.font = `800 ${bs}px Pretendard`; while (c.measureText(big).width > 700 && bs > 80) { bs -= 10; c.font = `800 ${bs}px Pretendard`; } }
+text('blue', big, 90, 290, bs); text('pink', big, 90, 290, bs);
+for (const n of ['blue', 'pink']) ko(n, x => { x.font = '800 42px Pretendard'; x.letterSpacing = '-1px'; x.fillText(S.foot1 || '', 96, 818); x.font = '800 36px Pretendard'; x.fillText(S.foot2 || '', 96, 868); });
+// 합성
+g.fillStyle = PAPER; g.fillRect(0, 0, W, H);
+g.globalCompositeOperation = 'multiply';
+for (const k in plates) {
+  const { c, ink, dx, dy } = plates[k];
+  const t = mk(), tx = t.getContext('2d');
+  tx.drawImage(c, 0, 0); tx.globalCompositeOperation = 'source-in'; tx.fillStyle = ink; tx.fillRect(0, 0, W, H);
+  tx.globalCompositeOperation = 'destination-out';
+  for (let i = 0; i < 2600; i++) { tx.globalAlpha = .35 + rnd() * .5; tx.beginPath(); tx.arc(rnd() * W, rnd() * H, rnd() * 1.6 + .3, 0, 6.3); tx.fill(); }
+  tx.globalAlpha = .1; for (let i = 0; i < 70; i++) tx.fillRect(0, rnd() * H, W, rnd() * 3 + 1);
+  tx.globalAlpha = 1;
+  g.globalAlpha = .93; g.drawImage(t, dx, dy); g.globalAlpha = 1;
+}
+g.globalCompositeOperation = 'source-over';
+g.globalAlpha = .05; g.fillStyle = '#6b5a3a';
+for (let i = 0; i < 1500; i++) g.fillRect(rnd() * W, rnd() * H, rnd() * 6 + 1, 1);
+g.globalAlpha = 1;
+document.title = 'ready';
+</script>

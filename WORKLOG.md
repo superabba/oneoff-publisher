@@ -220,3 +220,9 @@
 
 superabba/my-site의 카드뉴스봇 코드와 cardbot-data 브랜치는 절대 건드리지 마.
 ```
+
+## 15. 글만 받은 주제의 스타일 그림·영상 (2026-11-10)
+- lemo-opuscar(엔진 MIT) 중 등각 인포그래픽·스위스 모션·리소그래프 3가지를 채택. 주제에 맞춰 고르고 그림 3장 + 같은 배색의 영상을 만든다.
+- 추가: `tools/make_pictures.py`, `tools/render_iso.py`(headless Chrome 캡처), `tools/iso/scene.html`, `tools/styles/{swiss,riso}.html`, `tools/vendor/lemo-opuscar/`.
+- 영상은 장면 글자·배경을 스타일 색(`THEMES`)으로 바꾸고 그림을 photo 블록으로 넣는 방식. 영상 안에서 그림이 움직이지는 않는다.
+- 이 PC의 Edge는 `--screenshot`이 동작하지 않아 Chrome을 우선 쓴다.

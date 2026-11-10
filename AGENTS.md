@@ -34,6 +34,7 @@
 12. 글자 위주 캡처는 **구간별로 잘라 블로그 본문의 해당 위치에 넣고**, 통짜 원본은 글 맨 끝에 둔다 (사용자 요청, 2026-11-05).
     원본은 원래 해상도로 연다 (대화창 사진은 세로 2,000px로 줄어드니 긴 캡처는 구글드라이브로 받는다). 상세 방법은 스킬 2단계.
 14. 사진 없는 정보성 주제는 `tools/illustrate.py`로 그린 일러스트 3장을 블로그에 넣는다 (인터넷 검색·API 없음). 그림 속 글자도 확인된 사실만 쓴다 (사용자 결정 2026-11-09, 스킬 2단계).
+15. 사진 없이 글만 받으면 주제에 맞는 스타일(`iso` 등각·`swiss` 스위스·`riso` 리소그래프, lemo-opuscar)을 하나 골라 `tools/make_pictures.py`로 그림 3장을 만들어 블로그에 넣고, 영상의 `theme`·첫 장면 그림도 같은 스타일로 맞춘다 (사용자 결정 2026-11-10, 스킬 2단계). 그림 속 글자도 확인된 사실만.
 13. 사용자가 사진 없이 글만 줘도 블로그에는 사진을 넣는다. 영상 렌더 결과(`slide_*.jpg`, `reel_cover.jpg`)를 쓰고, 인터넷에서 사진을 검색해 넣지 않는다 (사용자 요청 2026-11-09, 스킬 2단계).
 7. 광고·협찬(대가성)은 기본 **없음**. 사용자가 있다고 말할 때만 블로그·캡션 맨 앞과 클립 `adDisclosure`에 표기.
 
@@ -59,6 +60,7 @@
 | `oneoff/bgm.py` | 분위기별 배경음악 (calm·warm·bright·upbeat·tense, auto는 원고 단어로 선택). 곡 라이브러리 → 없으면 합성(calm은 `music.py` 그대로). CC BY 출처 표기 |
 | `music/` | 배경음악 라이브러리: `library.json` + `<분위기>/*.m4a` (70초 발췌, −16 LUFS) |
 | `tools/illustrate.py` | 사진 없는 정보성 주제용 일러스트(달력·서류·계산기·동전 등)를 Pillow로 그림. API 없음 |
+| `tools/make_pictures.py` | 글만 받은 주제용: 스타일(iso·swiss·riso) 그림 3장 + 영상 theme. `tools/render_iso.py`(Chrome 캡처), `tools/iso/`·`tools/styles/`(페이지), `tools/vendor/lemo-opuscar/`(MIT 엔진) |
 | `tools/slice_original.py` | 긴 캡처 원본을 이어지는 PNG 조각(조각당 1.8MB 안)으로 나눔. 블로그 끝 원본용 |
 | `tools/fma.py` | Free Music Archive(HF 데이터셋)에서 라이브러리 곡 찾기(scan)·받기(fetch)·넣기(add). 이 PC에서만 실행 |
 | `oneoff/publish.py` | 게시 (DB 없이 `published.json`·`log.jsonl`에 기록) |
