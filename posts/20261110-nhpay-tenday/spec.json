@@ -1,0 +1,64 @@
+{
+  "id": "20261110-nhpay-tenday",
+  "title": "NH pay 텐데이 Payday 3천원 캐시백, 11월 10·20·30일 현장 결제 조건 정리",
+  "caption": "NH pay로 10일·20일·30일에 현장 결제하면 3천원 캐시백이에요 💙\n'열흘마다 찾아오는 텐데이 Payday' 이벤트 3 핵심만 정리했어요.\n\n✔ 이벤트 기간 2026.11.10(화) ~ 11.30(월)\n✔ 이벤트 응모 후 10일·20일·30일에 NH pay 현장 결제 (3,000원 이상)\n✔ 3,000원 캐시백, 최대 1회\n✔ NH농협카드 결제 필수 (비씨·선불·기프트·기업카드·NH머니 제외)\n✔ 캐시백은 12월 중 농협카드에 등록된 결제 계좌로 입금\n\n⚠ 이런 점은 확인하세요\n· 이벤트 응모가 필수예요\n· 경품 제공일 기준 NH농협카드 1장 이상 보유해야 해요 (해지·NH pay 탈회 시 제외될 수 있어요)\n· 개인고객 대상이에요\n\n자세한 정리는 네이버 블로그 '경제주막'에 올려뒀어요.\n※ 참여 전 공식 안내에서 꼭 확인하세요\n\n#NHpay #NH페이 #농협카드 #NH농협카드 #텐데이Payday #캐시백 #11월이벤트 #짠테크",
+  "threads": "NH pay 텐데이 Payday, 3천원 캐시백\n\n· 응모 후 11/10~11/30 중 10일·20일·30일에 NH pay 현장 결제 (3,000원 이상)\n· 3,000원 캐시백, 최대 1회\n· NH농협카드 결제 필수, 개인고객 대상\n· 캐시백은 12월 중 입금\n\n#NHpay #농협카드",
+  "platforms": ["reels", "threads", "youtube"],
+  "handle": "@economypub",
+  "theme": {"bg": "#EAF2FA", "ink": "#14285F", "accent": "#F28C28", "card": "#FFFFFF"},
+  "music": "bright",
+  "scenes": [
+    {
+      "blocks": [
+        {"type": "label", "text": "NH pay · 텐데이 Payday"},
+        {"type": "headline", "text": "3천원 [캐시백]", "size": 140},
+        {"type": "text", "text": "10일·20일·30일 현장 결제", "size": 56},
+        {"type": "photo", "src": "hero.jpg", "width": 640},
+        {"type": "pill", "text": "2026.11.10 ~ 11.30", "size": 46}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "대상"},
+        {"type": "headline", "text": "[NH농협카드] 결제 필수", "size": 110},
+        {"type": "card", "lines": ["NH pay 고객 (NH농협카드 보유)", "비씨·선불·기프트·기업카드", "NH머니는 제외"], "size": 50}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "이벤트 기간"},
+        {"type": "headline", "text": "11/10(화) ~ [11/30(월)]", "size": 105},
+        {"type": "card", "lines": ["이벤트 응모 후 결제", "응모일 결제도 포함"], "size": 54}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "받는 조건"},
+        {"type": "headline", "text": "[3천원 이상] 결제", "size": 125},
+        {"type": "card", "lines": ["NH pay 오프라인 현장 결제", "3,000원 캐시백 · 최대 1회"], "size": 54}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "참여 방법"},
+        {"type": "headline", "text": "[응모] 먼저", "size": 150},
+        {"type": "card", "lines": ["① NH pay 앱에서 이벤트 응모", "② 10·20·30일 중 원하는 날 결제", "③ 3천원 이상 현장 결제", "④ 3천원 캐시백 (최대 1회)"], "size": 46}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "캐시백 지급"},
+        {"type": "headline", "text": "[12월 중] 입금", "size": 135},
+        {"type": "card", "lines": ["농협카드에 등록된 결제 계좌로 일괄 입금", "경품 제공일 기준 NH농협카드 1장 이상 보유"], "size": 46}
+      ]
+    },
+    {
+      "blocks": [
+        {"type": "label", "text": "정리"},
+        {"type": "headline", "text": "참여 전 [3가지]", "size": 140},
+        {"type": "card", "lines": ["① 이벤트 응모 먼저", "② NH농협카드로 3천원 이상 현장 결제", "③ 카드 해지·NH pay 탈회 시 제외 가능"], "size": 48},
+        {"type": "pill", "text": "자세한 정리 · 네이버 블로그 '경제주막'", "size": 42, "style": "accent"}
+      ]
+    }
+  ]
+}
