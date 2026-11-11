@@ -1,0 +1,18 @@
+{
+  "mood": "warm",
+  "source": "library",
+  "track": {
+    "file": "warm/andy-g-cohen-a-human-being.m4a",
+    "mood": "warm",
+    "title": "A Human Being",
+    "artist": "Andy G. Cohen",
+    "license": "CC-BY 4.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Andy_G_Cohen/Through_The_Lens/Andy_G_Cohen_-_A_Human_Being",
+    "artist_url": "http://freemusicarchive.org/music/Andy_G_Cohen/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 829:38",
+    "start": 22.0,
+    "seconds": 70
+  },
+  "credit": "🎵 A Human Being - Andy G. Cohen (CC BY 4.0, 편집) http://freemusicarchive.org/music/Andy_G_Cohen/Through_The_Lens/Andy_G_Cohen_-_A_Human_Being"
+}
