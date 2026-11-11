@@ -1,0 +1,18 @@
+{
+  "mood": "bright",
+  "source": "library",
+  "track": {
+    "file": "bright/revolution-void-scattered-knowledge.m4a",
+    "mood": "bright",
+    "title": "Scattered Knowledge",
+    "artist": "Revolution Void",
+    "license": "CC-BY 3.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Revolution_Void/The_Politics_of_Desire/revolution_void_-_10_-_scattered_knowledge",
+    "artist_url": "http://freemusicarchive.org/music/Revolution_Void/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 231:104",
+    "start": 11.5,
+    "seconds": 70
+  },
+  "credit": "🎵 Scattered Knowledge - Revolution Void (CC BY 3.0, 편집) http://freemusicarchive.org/music/Revolution_Void/The_Politics_of_Desire/revolution_void_-_10_-_scattered_knowledge"
+}
