@@ -226,3 +226,16 @@ superabba/my-site의 카드뉴스봇 코드와 cardbot-data 브랜치는 절대 
 - 추가: `tools/make_pictures.py`, `tools/render_iso.py`(headless Chrome 캡처), `tools/iso/scene.html`, `tools/styles/{swiss,riso}.html`, `tools/vendor/lemo-opuscar/`.
 - 영상은 장면 글자·배경을 스타일 색(`THEMES`)으로 바꾸고 그림을 photo 블록으로 넣는 방식. 영상 안에서 그림이 움직이지는 않는다.
 - 이 PC의 Edge는 `--screenshot`이 동작하지 않아 Chrome을 우선 쓴다.
+
+## 16. 2026-11-11 발행 3건
+- **모니모 우리 매일이자 통장 사전예약 당첨자 신세계 상품권 1만 원** (`20261111-monimo-woori-10000`, 드라이브 Screenshot_1·2)
+  블로그 224472907738 · 릴스 Dflp4fQoxQE · 스레드 Dflp_djFQ2U · 쇼츠 xzsYeG_cl3M · 클립 5583580F…
+- **강릉시 민생안정지원금 10만 원** (`20261111-gangneung-10man`, 글만 받음 → 스위스 스타일 그림 3장 + 같은 배색 영상, 첫 적용)
+  사실은 강릉시청 주요뉴스(2026.10.19) 원문으로 확인. 요일별 배정·지급 요일은 뉴스에만 있어 뺌.
+  블로그 224472925494 · 릴스 DflrUfVgTMW · 스레드 DflrcM7FbxY · 쇼츠 Ay1PFxcy-fU · 클립 6A6B89D5…
+- **하나 나라사랑카드(체크)** (`20261111-hana-narasarang`, PDF 상품설명서 2쪽 → pymupdf로 표 구간 크롭 + 쪽 원본)
+  블로그 224473147820 · 릴스 Dfl-YIzOHvW · 스레드 Dfl-gBslfBn · 쇼츠 XKJpJSJylnA · 클립 117257174…
+- 교훈
+  - 블로그 끝 원본 사진의 대체 텍스트가 네이버에서 사진 밑 글자로 보인다 → `![](media:<id>){.fit}`로 비운다 (규칙 9 추가).
+  - 네이버 클립이 `naver_tab_lost`(업로드 중 창이 /web/draft로 이동)로 3번 연속 실패한 뒤, 사용자가 Edge에서 clipcreators.naver.com을 직접 열어 본 다음 4번째 재시도는 성공했다. 임시저장함은 비어 있었다. 원인은 확정 못 함 — 같은 증상이 나오면 Edge에서 클립 크리에이터를 한 번 열었다 닫고 `retry_post`.
+  - PDF는 이 PC에 pdftoppm이 없어 `pip install pymupdf` 후 `pymupdf`로 텍스트·크롭·쪽 렌더를 한다. 페이지 좌표는 72dpi 기준(get_pixmap dpi로 본 좌표에 72/dpi를 곱한다).
