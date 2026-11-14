@@ -1,0 +1,18 @@
+{
+  "mood": "warm",
+  "source": "library",
+  "track": {
+    "file": "warm/kevin-macleod-backed-vibes-clean.m4a",
+    "mood": "warm",
+    "title": "Backed Vibes Clean",
+    "artist": "Kevin MacLeod",
+    "license": "CC-BY 3.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Kevin_MacLeod/Jazz_Sampler/Backed_Vibes_Clean_1973",
+    "artist_url": "http://freemusicarchive.org/music/Kevin_MacLeod/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 303:38",
+    "start": 0.0,
+    "seconds": 70
+  },
+  "credit": "🎵 Backed Vibes Clean - Kevin MacLeod (CC BY 3.0, 편집) http://freemusicarchive.org/music/Kevin_MacLeod/Jazz_Sampler/Backed_Vibes_Clean_1973"
+}
