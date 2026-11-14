@@ -1,0 +1,18 @@
+{
+  "mood": "calm",
+  "source": "library",
+  "track": {
+    "file": "calm/spinning-clocks-around-the-mountain.m4a",
+    "mood": "calm",
+    "title": "Around the Mountain",
+    "artist": "Spinning Clocks",
+    "license": "CC-BY 4.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Spinning_Clocks/Spirits_in_the_Juice/Around_the_Mountain",
+    "artist_url": "http://freemusicarchive.org/music/Spinning_Clocks/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 683:26",
+    "start": 0.0,
+    "seconds": 70
+  },
+  "credit": "🎵 Around the Mountain - Spinning Clocks (CC BY 4.0, 편집) http://freemusicarchive.org/music/Spinning_Clocks/Spirits_in_the_Juice/Around_the_Mountain"
+}
