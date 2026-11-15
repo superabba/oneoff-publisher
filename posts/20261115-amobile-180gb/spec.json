@@ -1,0 +1,50 @@
+{
+  "id": "20261115-amobile-180gb",
+  "title": "A모바일 5G 180GB 월 8,500원, 알닷 7개월 특가 총 348,600원 할인 조건 정리",
+  "caption": "U+알뜰폰 알닷의 A모바일 180GB 요금제가 7개월 동안 월 8,500원이에요 📱\n요금과 혜택, 알아둘 점만 핵심으로 정리했어요.\n\n✔ 180GB + 소진 후 10Mbps 5G 후불요금제\n✔ 월 8,500원 (7개월 할인 특가), 총 348,600원 할인\n✔ 8개월째부터 월 58,300원\n✔ 혜택 최대 60,450원 (네이버페이 5만원 · 일반유심 7,700원 · eSIM 다운로드 2,750원)\n✔ 테더링(핫스팟) 월 20GB\n\n⚠ 이런 점은 확인하세요\n· 7개월이 지나면 월 58,300원이 돼요\n· 소액결제·해외로밍·데이터쉐어링은 지원하지 않아요\n· 일반유심은 NFC 기능이 없어요\n\n자세한 정리는 네이버 블로그 '경제주막'에 올려뒀어요.\n※ 가입 전 알닷 공식 안내에서 꼭 확인하세요\n\n#A모바일 #알닷 #U플러스알뜰폰 #알뜰폰요금제 #180GB #5G요금제 #통신비절약 #짠테크",
+  "threads": "A모바일 180GB 요금제, 7개월간 월 8,500원\n\n· 180GB 소진 후 10Mbps, 5G 후불요금제\n· 총 348,600원 할인, 8개월째부터 월 58,300원\n· 혜택 최대 60,450원, 핫스팟 월 20GB\n· 소액결제·해외로밍 미지원\n\n#A모바일 #알뜰폰요금제",
+  "platforms": ["reels", "threads", "youtube"],
+  "handle": "@economypub",
+  "theme": {"bg": "#F3F6FD", "ink": "#1E2250", "accent": "#C8402E", "card": "#FFFFFF"},
+  "music": "bright",
+  "scenes": [
+    {"blocks": [
+      {"type": "label", "text": "알닷 · A모바일 5G"},
+      {"type": "headline", "text": "월 [8,500원] 180GB", "size": 120},
+      {"type": "text", "text": "7개월 할인 특가 요금제", "size": 54},
+      {"type": "photo", "src": "hero_v.png", "width": 940},
+      {"type": "pill", "text": "총 348,600원 할인", "size": 46}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "요금"},
+      {"type": "headline", "text": "7개월 [8,500원]", "size": 125},
+      {"type": "card", "lines": ["8개월째부터 월 58,300원", "7개월 할인 특가 · 총 348,600원 할인", "후불요금제"], "size": 48}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "데이터"},
+      {"type": "headline", "text": "[180GB] + 10Mbps", "size": 120},
+      {"type": "card", "lines": ["다 써도 10Mbps로 계속 이용", "유튜브 1080p 60fps 재생 가능", "통화·문자 기본제공 · 5G"], "size": 46}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "혜택"},
+      {"type": "headline", "text": "최대 [60,450원]", "size": 125},
+      {"type": "card", "lines": ["알닷 혜택 최대 50,000원", "네이버페이 5만원 (가입 고객 누구나)", "A모바일 혜택 최대 10,450원"], "size": 46}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "유심"},
+      {"type": "headline", "text": "[유심·eSIM] 무료", "size": 120},
+      {"type": "card", "lines": ["일반유심(NFC 없음) 무료 · 7,700원 혜택", "eSIM 첫 다운로드 무료 · 2,750원 혜택"], "size": 46}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "부가서비스"},
+      {"type": "headline", "text": "[핫스팟] 월 20GB", "size": 120},
+      {"type": "card", "lines": ["가입한 달은 일할 계산", "U+ 인터넷과 가족결합 가능", "소액결제·해외로밍·데이터쉐어링 미지원"], "size": 42}
+    ]},
+    {"blocks": [
+      {"type": "label", "text": "정리"},
+      {"type": "headline", "text": "가입 전 [3가지]", "size": 140},
+      {"type": "card", "lines": ["① 월 8,500원은 7개월, 이후 58,300원", "② 180GB 소진 후 10Mbps", "③ 소액결제·해외로밍 미지원"], "size": 46},
+      {"type": "pill", "text": "자세한 정리 · 네이버 블로그 '경제주막'", "size": 42, "style": "accent"}
+    ]}
+  ]
+}

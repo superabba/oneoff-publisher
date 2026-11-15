@@ -1,0 +1,18 @@
+{
+  "mood": "bright",
+  "source": "library",
+  "track": {
+    "file": "bright/kevin-macleod-vibe-ace.m4a",
+    "mood": "bright",
+    "title": "Vibe Ace",
+    "artist": "Kevin MacLeod",
+    "license": "CC-BY 3.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Kevin_MacLeod/Jazz_Sampler/Vibe_Ace_1278",
+    "artist_url": "http://freemusicarchive.org/music/Kevin_MacLeod/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 303:37",
+    "start": 0.0,
+    "seconds": 70
+  },
+  "credit": "🎵 Vibe Ace - Kevin MacLeod (CC BY 3.0, 편집) http://freemusicarchive.org/music/Kevin_MacLeod/Jazz_Sampler/Vibe_Ace_1278"
+}
