@@ -1,0 +1,18 @@
+{
+  "mood": "bright",
+  "source": "library",
+  "track": {
+    "file": "bright/wake-steppin.m4a",
+    "mood": "bright",
+    "title": "Steppin",
+    "artist": "Wake",
+    "license": "CC-BY 3.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Wake/Bonus_Beat_Blast_2011/72_wake-steppin",
+    "artist_url": "http://freemusicarchive.org/music/Wake/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 343:29",
+    "start": 0.0,
+    "seconds": 70
+  },
+  "credit": "🎵 Steppin - Wake (CC BY 3.0, 편집) http://freemusicarchive.org/music/Wake/Bonus_Beat_Blast_2011/72_wake-steppin"
+}
