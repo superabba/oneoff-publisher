@@ -169,3 +169,126 @@ def test_publish_records_and_skips(post, tmp_path):
     assert reels2.seen == [] and threads2.seen and not failures
     assert "errors" not in meta
     assert len(log.read_text().splitlines()) == 2
+
+
+# ---------------------------------------------------------------- 내레이션·영상 캡처
+
+@pytest.fixture
+def narrated(post, monkeypatch):
+    monkeypatch.setenv("ONEOFF_FAKE_TTS", "1")
+    raw = json.loads((post / "spec.json").read_text(encoding="utf-8"))
+    raw["scenes"] = raw["scenes"][:3]
+    for sc, text in zip(raw["scenes"], ["월 5,500원 알뜰폰, 가입 전에 이것만 확인하세요.",
+                                        "데이터 20GB, 통화 500분, 문자 100건이에요.", ""]):
+        sc["narration"] = text
+    (post / "spec.json").write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    return post
+
+
+def test_narration_validation(post):
+    raw = json.loads((post / "spec.json").read_text(encoding="utf-8"))
+    raw["scenes"][0]["narration"] = "가" * 141
+    (post / "spec.json").write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    with pytest.raises(specmod.SpecError, match="narration"):
+        specmod.load(post)
+    raw["scenes"][0]["narration"] = "이모지 😀 는 안 돼요"
+    (post / "spec.json").write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    with pytest.raises(specmod.SpecError, match="이모지"):
+        specmod.load(post)
+    raw["scenes"][0]["narration"] = "괜찮은 문장이에요."
+    raw["voice_rate"] = "빠르게"
+    (post / "spec.json").write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    with pytest.raises(specmod.SpecError, match="voice_rate"):
+        specmod.load(post)
+
+
+def test_narration_warnings(narrated):
+    s = specmod.load(narrated)
+    assert s.has_narration and any("내레이션이 없는 장면" in w for w in specmod.warnings(s))
+
+
+def test_fake_voice_length_follows_text(monkeypatch):
+    from oneoff import tts
+    monkeypatch.setenv("ONEOFF_FAKE_TTS", "1")
+    short, long_ = tts.synthesize("가나다"), tts.synthesize("가나다라마바사아자차")
+    assert len(long_) > len(short) * 3 and float(np.abs(short).max()) > 0.1
+
+
+def test_voice_mix_filter_ducks_music_under_voice():
+    from oneoff.video import voice_mix_filter
+    f = voice_mix_filter("afade=t=in:d=0.3", False)
+    assert "sidechaincompress" in f and "loudnorm=I=-14" in f and f.endswith("[a]")
+    assert voice_mix_filter("", True) == "[2:a]loudnorm=I=-14:TP=-1.5:LRA=7[a]"
+
+
+def test_render_with_narration_extends_scenes_adds_audio_and_frames(narrated):
+    import subprocess
+
+    from oneoff import frames
+    from oneoff.video import FPS, VOICE_GAP_S, VOICE_LEAD_S, ffmpeg, render_video
+    s = specmod.load(narrated)
+    reel, cover, total = render_video(s, narrated)
+    plan = json.loads((narrated / "reel_plan.json").read_text(encoding="utf-8"))
+    assert plan["narration"] is True and len(plan["frames"]) == 3 and plan["frames"] == sorted(plan["frames"])
+    first_len = 25 * 0.19 * 0 + len("월5,500원알뜰폰,가입전에이것만확인하세요.") * 0.19 + 0.25
+    assert plan["scenes"][0]["seconds"] >= VOICE_LEAD_S + first_len + VOICE_GAP_S - 0.05   # 목소리 길이만큼 장면이 길어짐
+    info = subprocess.run([ffmpeg(), "-i", str(reel)], capture_output=True, text=True).stderr
+    assert "Audio: aac" in info and "Video: h264" in info
+    assert abs(total - plan["duration"]) < 0.05
+    shots = frames.capture(narrated)
+    assert [p.name for p in shots] == ["frame_01.jpg", "frame_02.jpg", "frame_03.jpg"]
+    assert frames.images_for_threads(narrated) == shots
+    for p in narrated.glob("frame_*.jpg"):
+        p.unlink()
+    assert frames.images_for_threads(narrated) == []   # 캡처가 없고 슬라이드도 없으면 빈 목록
+
+
+def test_publish_uses_frames_for_threads_and_rehosts_when_slides_were_used(narrated):
+    from oneoff import frames
+    from oneoff.render import render_slides
+    from oneoff.video import render_video
+    s = specmod.load(narrated)
+    render_slides(s, narrated)
+    render_video(s, narrated)
+    frames.capture(narrated)
+    seen = {}
+
+    class Host:
+        def upload(self, files, name):
+            seen.setdefault("up", []).append([f.name for f in files])
+            return [f"https://cdn/{name}/{f.name}" for f in files]
+
+        def candidates(self, url):
+            return [url]
+
+    class Pub:
+        name, needs_video = "threads", False
+
+        def publish(self, assets, text):
+            seen["urls"] = assets["image_urls"]
+            return PublishResult(platform="threads", media_id="m", permalink="p")
+
+    # 이전에 슬라이드 주소로 올려 둔 기록이 있어도 캡처로 다시 올린다
+    (narrated / "published.json").write_text(json.dumps({"image_urls": ["https://cdn/x/slide_01.jpg", "https://cdn/x/slide_02.jpg"]}))
+    publish(s, ["threads"], publishers=[Pub()], host=Host())
+    assert seen["up"] == [["frame_01.jpg", "frame_02.jpg", "frame_03.jpg"]]
+    assert [u.rsplit("/", 1)[-1] for u in seen["urls"]] == ["frame_01.jpg", "frame_02.jpg", "frame_03.jpg"]
+
+
+# ---------------------------------------------------------------- 네이버 블로그 대표 사진: 정사각형
+
+def test_blogimg_makes_a_square_without_cropping(tmp_path):
+    from PIL import Image
+
+    from oneoff.__main__ import main
+    from oneoff.blogimg import make, square_fit
+    for size in ((1080, 1920), (1217, 863), (1181, 1181), (600, 2000)):
+        assert square_fit(Image.new("RGB", size, (30, 90, 200))).size == (1080, 1080)
+    tall = Image.new("RGB", (1080, 1920), (255, 255, 255))
+    tall.paste((255, 0, 0), (0, 0, 1080, 40))                       # 맨 위 빨간 띠
+    p = tmp_path / "promo.jpg"
+    tall.save(p)
+    out = make(p)
+    assert out.name == "promo_square.jpg" and Image.open(out).size == (1080, 1080)
+    assert Image.open(out).getpixel((540, 2))[0] > 200               # 원본 맨 위 띠가 잘리지 않고 보임
+    assert main(["blogimg", str(p), "--out", str(tmp_path / "t.jpg")]) == 0 and (tmp_path / "t.jpg").exists()

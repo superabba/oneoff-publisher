@@ -147,3 +147,12 @@ python tools/fma.py add .cache/fma_tracks/173-000-....mp3 --mood calm   # 70초 
 2. **Actions 권한** — 워크플로가 `permissions: contents: write`를 직접 요청하므로 보통 손댈 필요 없다.
    data 브랜치 푸시가 403으로 실패하면 Settings → Actions → General → Workflow permissions를 *Read and write*로.
 3. 저장소는 **공개**여야 한다 — 인스타·스레드가 `raw.githubusercontent.com`/jsDelivr에서 파일을 가져간다.
+
+## 내레이션 · 스레드 캡처 · 블로그 대표 사진
+
+- **내레이션**: `scenes[].narration` 한 문장씩 쓰면 여성 목소리(edge-tts, `voice`·`voice_rate`로 바꿈)가 읽는다. 장면 길이는 목소리에 맞춰 늘고,
+  배경음악은 목소리가 나올 때 자동으로 낮아진다 (사이드체인, 최종 −14 LUFS). 이모지·`# @ * < > [ ]` 금지, 장면당 140자 이하.
+  없으면 지금까지처럼 음악만. 개발·시험용 `ONEOFF_FAKE_TTS=1` 은 목소리 대신 길이만 맞춘 소리.
+- **스레드 이미지**: 슬라이드(`slide_*.jpg`) 대신 릴스 영상의 장면 캡처(`frame_*.jpg`)를 올린다. `render`가 `reel_plan.json`의 시각에서 캡처하고,
+  캡처가 2장 미만이면 슬라이드를 쓴다.
+- **네이버 블로그 대표 사진**: 피드가 첫 이미지를 정사각형으로 잘라 보여 주므로 `python -m oneoff blogimg <사진>` 으로 1080×1080(잘리는 곳 없음) 파일을 만들어 첫 사진으로 쓴다.

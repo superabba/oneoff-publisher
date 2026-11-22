@@ -24,6 +24,9 @@ DEFAULT_THEME = {
 MUSIC_AUTO, MUSIC_OFF = "auto", "none"
 MUSIC_MOODS = ("calm", "warm", "bright", "upbeat", "tense")  # 잔잔·따뜻·경쾌·신나는·주의 (bgm.py)
 
+NARRATION_MAX = 140  # 장면 하나의 내레이션 글자 수 상한 (읽는 데 약 25초)
+NARRATION_BAD = re.compile("[\U0001F000-\U0001FFFF\u2600-\u27BF#@*<>\\[\\]]")  # 목소리가 그대로 읽는 기호·이모지
+
 IG_CAPTION_MAX = 2200
 IG_HASHTAG_MAX = 30
 THREADS_MAX = 500
@@ -49,6 +52,7 @@ def hashtags(text: str) -> list[str]:
 class Scene:
     blocks: list[dict]
     seconds: float | None = None
+    narration: str = ""  # 이 장면에서 읽어 줄 문장 (비우면 이 장면은 목소리 없이 음악만)
 
 
 @dataclass
@@ -65,6 +69,12 @@ class Spec:
     music: str = MUSIC_AUTO
     music_track: str = ""  # 곡 라이브러리에서 직접 지정 ("bright/xxx.m4a"), "synth"면 합성
     youtube_privacy: str = ""  # 비우면 YOUTUBE_PRIVACY 시크릿/변수(없으면 public)
+    voice: str = "ko-KR-SunHiNeural"  # 내레이션 목소리 (edge-tts)
+    voice_rate: str = "+0%"  # 말하는 속도 (예: "+10%")
+
+    @property
+    def has_narration(self) -> bool:
+        return any(sc.narration for sc in self.scenes)
 
     def color(self, name: str) -> tuple[int, int, int]:
         return hex_rgb(self.theme.get(name) or DEFAULT_THEME[name])
@@ -117,7 +127,12 @@ def load(folder: Path) -> Spec:
             elif t != "spacer" and not b.get("text"):
                 raise SpecError(f"장면 {i}: {t} 블록에 text가 없습니다")
         sec = sc.get("seconds")
-        scenes.append(Scene(blocks=blocks, seconds=float(sec) if sec else None))
+        narr = re.sub(r"\s+", " ", str(sc.get("narration") or "")).strip()
+        if len(narr) > NARRATION_MAX:
+            raise SpecError(f"장면 {i}: narration이 {len(narr)}자입니다 (최대 {NARRATION_MAX}자)")
+        if NARRATION_BAD.search(narr):
+            raise SpecError(f"장면 {i}: narration에 이모지·기호(# @ * < > [ ])를 쓰지 마세요 (목소리가 그대로 읽습니다)")
+        scenes.append(Scene(blocks=blocks, seconds=float(sec) if sec else None, narration=narr))
     if len(scenes) < 2:
         raise SpecError("장면은 2개 이상이어야 합니다 (스레드 캐러셀이 2장 이상 필요)")
 
@@ -131,12 +146,16 @@ def load(folder: Path) -> Spec:
     if music not in {MUSIC_AUTO, MUSIC_OFF, *MUSIC_MOODS}:
         raise SpecError(f"music는 {MUSIC_AUTO}/{MUSIC_OFF}/{'/'.join(MUSIC_MOODS)} 중 하나")
 
+    rate = str(raw.get("voice_rate") or "+0%").strip()
+    if not re.fullmatch(r"[+-]\d{1,2}%", rate):
+        raise SpecError('voice_rate는 "+10%" 같은 형식입니다 (-50% ~ +50%)')
+
     return Spec(
         id=raw["id"], title=raw["title"].strip(), caption=raw["caption"].strip(),
         threads=raw["threads"].strip(), scenes=scenes, folder=folder, platforms=platforms,
         theme=theme, handle=raw.get("handle", "@economypub"), music=music,
         music_track=str(raw.get("music_track") or "").strip(),
-        youtube_privacy=privacy,
+        youtube_privacy=privacy, voice=str(raw.get("voice") or "ko-KR-SunHiNeural").strip(), voice_rate=rate,
     )
 
 
@@ -149,6 +168,12 @@ def warnings(spec: Spec) -> list[str]:
         out.append(f"해시태그 {len(hashtags(spec.caption))}개 (인스타 최대 {IG_HASHTAG_MAX}개)")
     if len(spec.threads) > THREADS_MAX:
         out.append(f"스레드 글이 {len(spec.threads)}자 (최대 {THREADS_MAX}자) — 잘립니다")
+    if spec.has_narration:
+        total = sum(len(re.sub(r"\s", "", sc.narration)) for sc in spec.scenes)
+        if total > 330:
+            out.append(f"내레이션이 공백 제외 {total}자 — 약 {total * 0.19:.0f}초라 쇼츠로는 깁니다 (권장 330자 이하)")
+        if any(not sc.narration for sc in spec.scenes):
+            out.append("내레이션이 없는 장면이 있습니다 — 그 장면은 음악만 나옵니다")
     if len(spec.title) > YT_TITLE_MAX:
         out.append(f"제목이 {len(spec.title)}자 (유튜브 최대 {YT_TITLE_MAX}자) — 잘립니다")
     return out

@@ -122,6 +122,7 @@ jobs:
             data/posts/${{ inputs.post }}/reel.mp4
             data/posts/${{ inputs.post }}/reel_cover.jpg
             data/posts/${{ inputs.post }}/slide_*.jpg
+            data/posts/${{ inputs.post }}/frame_*.jpg
             data/posts/${{ inputs.post }}/preview_*.jpg
           if-no-files-found: ignore
           retention-days: 14

@@ -20,7 +20,9 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-from . import bgm
+import numpy as np
+
+from . import bgm, tts
 from .bgm import audio_filter, credit, pick_mood, pick_track, track_filter, write_track
 from .render import VIDEO, W, Placed, background, draw_handle, layout
 from .spec import MUSIC_AUTO, MUSIC_OFF, Spec
@@ -28,6 +30,8 @@ from .spec import MUSIC_AUTO, MUSIC_OFF, Spec
 log = logging.getLogger(__name__)
 
 FPS = 30
+VOICE_LEAD_S = 0.45  # 장면이 시작하고 목소리가 나오기까지
+VOICE_GAP_S = 0.55  # 목소리가 끝나고 다음 장면까지
 ENTER_S = 0.42  # 블록 하나가 등장하는 시간
 STAGGER_S = 0.13  # 다음 블록이 등장하기까지 간격
 FIRST_DELAY_S = 0.06
@@ -153,16 +157,26 @@ def encode_scene(frames, out: Path) -> None:
     tmp.replace(out)
 
 
+def enter_end_s(n_blocks: int) -> float:
+    return FIRST_DELAY_S + max(0, n_blocks - 1) * STAGGER_S + ENTER_S
+
+
 def render_video(spec: Spec, out_dir: Path) -> tuple[Path, Path, float]:
-    """(reel.mp4, reel_cover.jpg, 길이초) 반환."""
+    """(reel.mp4, reel_cover.jpg, 길이초) 반환. 내레이션이 있으면 목소리 길이에 맞춰 장면 길이를 늘린다."""
     work = out_dir / "_scenes"
     work.mkdir(exist_ok=True)
     n = len(spec.scenes)
     parts, total = [], 0.0
     cover = out_dir / "reel_cover.jpg"
+    voices: list[np.ndarray | None] = []
+    for sc in spec.scenes:  # 목소리를 먼저 만들어 장면 길이를 정한다
+        voices.append(tts.synthesize(sc.narration, spec.voice, spec.voice_rate, work) if sc.narration else None)
+    starts, seconds, frames_at = [], [], []
     for i, sc in enumerate(spec.scenes):
         placed = layout(sc.blocks, spec, VIDEO)
         sec = sc.seconds or scene_seconds(sc.blocks)
+        if voices[i] is not None:
+            sec = max(sec, VOICE_LEAD_S + len(voices[i]) / tts.SR + VOICE_GAP_S)
         if i == n - 1:
             sec += 0.6  # 마지막 장면은 조금 더 머문다
         if i == 0:  # 커버: 첫 장면이 다 등장한 모습 (진행 바 없음)
@@ -172,6 +186,10 @@ def render_video(spec: Spec, out_dir: Path) -> tuple[Path, Path, float]:
         part = work / f"scene_{i + 1:02d}.mp4"
         encode_scene(scene_frames(spec, i, n, placed, sec), part)
         parts.append(part)
+        starts.append(total)
+        seconds.append(sec)
+        # 스레드용 캡처: 블록이 다 나온 뒤, 장면의 65% 지점 (내레이션이 한창 나올 때)
+        frames_at.append(round(total + min(sec - 0.2, max(enter_end_s(len(placed)) + 0.3, sec * 0.65)), 2))
         total += int(round(sec * FPS)) / FPS
         log.info("장면 %d/%d 완료 (%.1f초)", i + 1, n, sec)
 
@@ -186,30 +204,61 @@ def render_video(spec: Spec, out_dir: Path) -> tuple[Path, Path, float]:
     mood = pick_mood(spec)
     track = pick_track(spec, mood)
     auto = " (원고 글자로 자동 선택)" if spec.music == MUSIC_AUTO else ""
+    narrated = any(v is not None for v in voices)
+    voice_wav = None
+    if narrated:  # 장면 시작 + 리드 위치에 목소리를 놓은 한 줄짜리 소리 파일
+        buf = np.zeros(int((total + 1.0) * tts.SR), np.float32)
+        for st, v in zip(starts, voices):
+            if v is not None:
+                a = int((st + VOICE_LEAD_S) * tts.SR)
+                buf[a:a + len(v)] += v[: max(0, len(buf) - a)]
+        voice_wav = work / "voice.wav"
+        tts.write_wav(voice_wav, buf)
     if mood == MUSIC_OFF:
         cmd = [ffmpeg(), "-y", "-loglevel", "error", "-i", str(silent),
                "-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100"]
-        af = []
+        af = ""
     elif track:  # 발췌가 영상보다 짧으면 처음부터 다시 이어 붙인다
         cmd = [ffmpeg(), "-y", "-loglevel", "error", "-i", str(silent),
                "-stream_loop", "-1", "-i", str(bgm.LIBRARY / track["file"])]
-        af = ["-af", track_filter(total)]
+        af = track_filter(total)
         log.info("배경음악: %s%s — %s / %s (%s)", mood, auto, track["title"], track["artist"], track["license"])
     else:
         wav = write_track(work / "music.wav", total + 1, spec.id, mood)
         cmd = [ffmpeg(), "-y", "-loglevel", "error", "-i", str(silent), "-i", str(wav)]
-        af = ["-af", audio_filter(mood, total)]
+        af = audio_filter(mood, total)
         log.info("배경음악: %s%s (합성)", mood, auto)
     # 게시할 때 출처 표기를 붙이려고 어떤 곡을 썼는지 남긴다
     (out_dir / "music.json").write_text(json.dumps(
         {"mood": mood, "source": "library" if track else ("none" if mood == MUSIC_OFF else "synth"),
          "track": track, "credit": credit(track)}, ensure_ascii=False, indent=2), encoding="utf-8")
-    cmd += ["-map", "0:v", "-map", "1:a", *af, "-shortest", "-c:v", "copy",
-            "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", str(tmp)]
+    if narrated:
+        cmd += ["-i", str(voice_wav), "-filter_complex", voice_mix_filter(af, mood == MUSIC_OFF), "-map", "0:v", "-map", "[a]"]
+        log.info("내레이션: %s %s (%d장면)", spec.voice, spec.voice_rate, sum(v is not None for v in voices))
+    else:
+        cmd += ["-map", "0:v", "-map", "1:a", *(["-af", af] if af else [])]
+    cmd += ["-t", f"{total:.3f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "160k", "-ar", "44100", "-movflags", "+faststart", str(tmp)]
     _run(cmd)
     tmp.replace(out)
+    # 영상 길이·장면 시각·캡처 시각 (스레드 캡처와 확인용)
+    (out_dir / "reel_plan.json").write_text(json.dumps(
+        {"fps": FPS, "duration": round(total, 2), "narration": narrated,
+         "scenes": [{"start": round(a, 2), "seconds": round(b, 2)} for a, b in zip(starts, seconds)],
+         "frames": frames_at}, ensure_ascii=False, indent=2), encoding="utf-8")
     log.info("영상 완료: %s (%.1f초)", out, total)
     return out, cover, total
+
+
+def voice_mix_filter(bgm_af: str, no_music: bool) -> str:
+    """목소리(입력 2)와 배경음악(입력 1)을 섞는다. 목소리가 나올 때 음악은 자동으로 낮아지고(사이드체인),
+    음악 자체도 목소리 밑에서 은은하도록 미리 낮춘다. 마지막에 −14 LUFS 근처로 맞춘다."""
+    voice = "[2:a]loudnorm=I=-16:TP=-1.5:LRA=7,asplit=2[v][vk]"
+    if no_music:
+        return "[2:a]loudnorm=I=-14:TP=-1.5:LRA=7[a]"
+    chain = (bgm_af + ",") if bgm_af else ""
+    return (f"[1:a]{chain}volume=0.5[bg];{voice};"
+            "[bg][vk]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=450[duck];"
+            "[duck][v]amix=inputs=2:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=9[a]")
 
 
 def _run(cmd: list[str]) -> None:
