@@ -66,7 +66,7 @@
 | `tools/fma.py` | Free Music Archive(HF 데이터셋)에서 라이브러리 곡 찾기(scan)·받기(fetch)·넣기(add). 이 PC에서만 실행 |
 | `oneoff/tts.py` | 장면 내레이션 목소리 (edge-tts, 키 없음). `ONEOFF_FAKE_TTS=1` 은 길이만 맞춘 가짜 소리 |
 | `oneoff/frames.py` | 릴스 영상에서 스레드 캐러셀용 장면 캡처(`frame_*.jpg`). `reel_plan.json`의 시각 사용 |
-| `oneoff/blogimg.py` | 네이버 블로그 대표 사진을 정사각형(1080×1080)으로 — 피드 썸네일이 안 잘리게 (`python -m oneoff blogimg`) |
+| `oneoff/blogimg.py` | 네이버 블로그 이미지: 대표 1:1(`--hero`)·본문 4:5(`--body`)는 글자 구간만 자름, 사용자 원본은 통째로 정사각형 (`python -m oneoff blogimg`) |
 | `oneoff/publish.py` | 게시 (DB 없이 `published.json`·`log.jsonl`에 기록) |
 | `oneoff/publishers.py`, `youtube.py`, `hosting.py`, `music.py` | 카드뉴스봇에서 **그대로 복사** (원본 `my-site/cardnews-bot/cardbot/`) |
 | `.github/workflows/publish.yml` | 수동 실행: `post`, `action`(publish/render/render-publish), `platforms` |

@@ -88,8 +88,9 @@ def cmd_blogimg(a) -> int:
     from .blogimg import make
 
     for f in a.files:
-        out = make(Path(f), Path(a.out) if a.out and len(a.files) == 1 else None)
-        print(f"정사각형 1080x1080: {out}")
+        mode = "hero" if a.hero else "body" if a.body else "square"
+        out = make(Path(f), Path(a.out) if a.out and len(a.files) == 1 else None, mode)
+        print(f"{ {'square': '정사각형 1080x1080 (통째로)', 'hero': '대표 1080x1080 (글자 구간)', 'body': '본문 1080x1350 (글자 구간)'}[mode] }: {out}")
     return 0
 
 
@@ -120,6 +121,8 @@ def main(argv=None) -> int:
     pb = sub.add_parser("blogimg", help="네이버 블로그 대표 사진을 정사각형(1080x1080)으로 (피드 썸네일이 잘리지 않게)")
     pb.add_argument("files", nargs="+")
     pb.add_argument("--out", default="", help="저장 경로 (사진 한 장일 때만, 비우면 <이름>_square.jpg)")
+    pb.add_argument("--hero", action="store_true", help="영상 캡처·슬라이드 대표 사진: 글자 있는 구간을 1:1 로 자름")
+    pb.add_argument("--body", action="store_true", help="영상 캡처·슬라이드 본문 사진: 글자 있는 구간을 4:5 로 자름")
     pb.set_defaults(fn=cmd_blogimg)
     a = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
