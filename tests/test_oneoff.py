@@ -292,3 +292,16 @@ def test_blogimg_makes_a_square_without_cropping(tmp_path):
     assert out.name == "promo_square.jpg" and Image.open(out).size == (1080, 1080)
     assert Image.open(out).getpixel((540, 2))[0] > 200               # 원본 맨 위 띠가 잘리지 않고 보임
     assert main(["blogimg", str(p), "--out", str(tmp_path / "t.jpg")]) == 0 and (tmp_path / "t.jpg").exists()
+
+
+def test_blogimg_hero_and_body_modes(tmp_path):
+    from PIL import Image, ImageDraw
+    from oneoff.__main__ import main
+    im = Image.new("RGB", (1080, 1350), (20, 30, 60))
+    d = ImageDraw.Draw(im)
+    for y in range(200, 700, 60):
+        d.rectangle((80, y, 1000, y + 30), fill=(255, 255, 255))
+    p = tmp_path / "slide.jpg"
+    im.save(p)
+    assert main(["blogimg", str(p), "--hero"]) == 0 and Image.open(tmp_path / "slide_hero.jpg").size == (1080, 1080)
+    assert main(["blogimg", str(p), "--body"]) == 0 and Image.open(tmp_path / "slide_body.jpg").size == (1080, 1350)
