@@ -1,0 +1,18 @@
+{
+  "mood": "calm",
+  "source": "library",
+  "track": {
+    "file": "calm/kai-engel-snowmen.m4a",
+    "mood": "calm",
+    "title": "Snowmen",
+    "artist": "Kai Engel",
+    "license": "CC-BY 4.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Kai_Engel/Chapter_One__Cold/Kai_Engel_-_Chapter_One_-_Cold_-_04_Snowmen",
+    "artist_url": "http://freemusicarchive.org/music/Kai_Engel/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 789:23",
+    "start": 16.5,
+    "seconds": 70
+  },
+  "credit": "🎵 Snowmen - Kai Engel (CC BY 4.0, 편집) http://freemusicarchive.org/music/Kai_Engel/Chapter_One__Cold/Kai_Engel_-_Chapter_One_-_Cold_-_04_Snowmen"
+}
