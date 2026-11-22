@@ -35,6 +35,10 @@ def cmd_check(a) -> int:
         print(f"  출처 표기(릴스·쇼츠 설명 끝에 자동으로 붙음, 스레드는 음악이 없어 제외): {line}")
         if len(s.caption) + len(line) + 2 > specmod.IG_CAPTION_MAX:
             warns.append(f"캡션 + 출처 표기가 {specmod.IG_CAPTION_MAX}자를 넘어 본문 끝이 잘립니다")
+    if s.has_narration:
+        chars = sum(len("".join(sc.narration.split())) for sc in s.scenes)
+        print(f"  내레이션 {sum(1 for sc in s.scenes if sc.narration)}장면 / 공백 제외 {chars}자 (약 {chars * 0.19:.0f}초) — "
+              f"{s.voice} {s.voice_rate}")
     for w in warns:
         print(f"  경고: {w}")
     return 0
@@ -69,11 +73,23 @@ def cmd_render(a) -> int:
     cmd_preview(a)
     s = specmod.load(Path(a.folder))
     video, cover, total = render_video(s, Path(a.folder))
+    from .frames import capture
+    shots = capture(Path(a.folder))
+    print(f"스레드용 장면 캡처 {len(shots)}장" if shots else "스레드용 장면 캡처 없음 — 슬라이드를 씁니다")
     if not a.keep:
         for p in (Path(a.folder) / "_scenes").glob("*"):
             if p.suffix in {".mp4", ".wav", ".txt"}:
                 p.unlink()
     print(f"영상: {video} ({total:.1f}초), 커버: {cover}")
+    return 0
+
+
+def cmd_blogimg(a) -> int:
+    from .blogimg import make
+
+    for f in a.files:
+        out = make(Path(f), Path(a.out) if a.out and len(a.files) == 1 else None)
+        print(f"정사각형 1080x1080: {out}")
     return 0
 
 
@@ -101,6 +117,10 @@ def main(argv=None) -> int:
         if name == "publish":
             p.add_argument("--platforms", default="")
             p.add_argument("--log", default="")
+    pb = sub.add_parser("blogimg", help="네이버 블로그 대표 사진을 정사각형(1080x1080)으로 (피드 썸네일이 잘리지 않게)")
+    pb.add_argument("files", nargs="+")
+    pb.add_argument("--out", default="", help="저장 경로 (사진 한 장일 때만, 비우면 <이름>_square.jpg)")
+    pb.set_defaults(fn=cmd_blogimg)
     a = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     try:

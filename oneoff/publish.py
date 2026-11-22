@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .hosting import GitHubHost
+from .frames import images_for_threads
 from .publishers import ReelsPublisher, ThreadsPublisher
 from .spec import IG_CAPTION_MAX, THREADS_MAX, Spec, hashtags
 
@@ -79,15 +80,16 @@ def publish(spec: Spec, platforms: list[str] | None = None, publishers=None, hos
         return meta, []
 
     reel, cover = folder / "reel.mp4", folder / "reel_cover.jpg"
-    slides = sorted(folder.glob("slide_*.jpg"))
+    slides = images_for_threads(folder)  # 영상 장면 캡처(frame_*.jpg)가 있으면 그것, 없으면 슬라이드
     if any(getattr(p, "needs_video", False) or getattr(p, "needs_video_file", False) for p in pending):
         if not reel.exists():
             raise FileNotFoundError("reel.mp4가 없습니다 — 먼저 render 하세요")
     if any(p.name == "threads" for p in pending) and len(slides) < 2:
-        raise FileNotFoundError("slide_*.jpg가 2장 이상 필요합니다 — 먼저 render 하세요")
+        raise FileNotFoundError("스레드에 올릴 이미지(frame_*.jpg 또는 slide_*.jpg)가 2장 이상 필요합니다 — 먼저 render 하세요")
 
     # 공개 URL 만들기 (필요한 것만, 이미 올렸으면 재사용)
-    if any(p.name == "threads" for p in pending) and not meta.get("image_urls"):
+    stale = [u.rsplit("/", 1)[-1] for u in meta.get("image_urls") or []] != [p.name for p in slides]  # 슬라이드→캡처로 바뀐 경우
+    if any(p.name == "threads" for p in pending) and (not meta.get("image_urls") or stale):
         host = host or make_host()
         meta["image_urls"] = host.upload(slides, spec.id)
         save()
