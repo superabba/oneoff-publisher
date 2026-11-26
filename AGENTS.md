@@ -38,6 +38,8 @@
 15. 사진 없이 글만 받으면 주제에 맞는 스타일(`iso` 등각·`swiss` 스위스·`riso` 리소그래프, lemo-opuscar)을 하나 골라 `tools/make_pictures.py`로 그림 3장을 만들어 블로그에 넣고, 영상의 `theme`·첫 장면 그림도 같은 스타일로 맞춘다 (사용자 결정 2026-11-10, 스킬 2단계). 그림 속 글자도 확인된 사실만.
 13. 사용자가 사진 없이 글만 줘도 블로그에는 사진을 넣는다. 영상 렌더 결과(`slide_*.jpg`, `reel_cover.jpg`)를 쓰고, 인터넷에서 사진을 검색해 넣지 않는다 (사용자 요청 2026-11-09, 스킬 2단계).
 7. 광고·협찬(대가성)은 기본 **없음**. 사용자가 있다고 말할 때만 블로그·캡션 맨 앞과 클립 `adDisclosure`에 표기.
+16. 네이버 블로그 본문은 **같은 단어 최대 4번(유의어·연관어 사용) · 핵심키워드 3~4번 · HTML 태그 없음 · 외부 링크 없음**
+    (사용자 요청, 2026-11-26). 발행·수정 전에 `tools/check_naver.py`로 검사한다. 상세 기준은 스킬 3단계.
 
 ## 계정·고정값
 | 항목 | 값 |
@@ -64,6 +66,7 @@
 | `tools/make_pictures.py` | 글만 받은 주제용: 스타일(iso·swiss·riso) 그림 3장 + 영상 theme. `tools/render_iso.py`(Chrome 캡처), `tools/iso/`·`tools/styles/`(페이지), `tools/vendor/lemo-opuscar/`(MIT 엔진) |
 | `tools/slice_original.py` | 긴 캡처 원본을 이어지는 PNG 조각(조각당 1.8MB 안)으로 나눔. 블로그 끝 원본용 |
 | `tools/fma.py` | Free Music Archive(HF 데이터셋)에서 라이브러리 곡 찾기(scan)·받기(fetch)·넣기(add). 이 PC에서만 실행 |
+| `tools/check_naver.py` | 네이버 블로그 본문 검사: HTML 태그·외부 링크·5번 이상 반복 단어·핵심키워드 횟수 (규칙 16) |
 | `oneoff/tts.py` | 장면 내레이션 목소리 (edge-tts, 키 없음). `ONEOFF_FAKE_TTS=1` 은 길이만 맞춘 가짜 소리 |
 | `oneoff/frames.py` | 릴스 영상에서 스레드 캐러셀용 장면 캡처(`frame_*.jpg`). `reel_plan.json`의 시각 사용 |
 | `oneoff/blogimg.py` | 네이버 블로그 이미지: 대표 1:1(`--hero`)·본문 4:5(`--body`)는 글자 구간만 자름, 사용자 원본은 통째로 정사각형 (`python -m oneoff blogimg`) |
