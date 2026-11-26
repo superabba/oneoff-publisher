@@ -1,0 +1,18 @@
+{
+  "mood": "calm",
+  "source": "library",
+  "track": {
+    "file": "calm/chris-zabriskie-cylinder-nine.m4a",
+    "mood": "calm",
+    "title": "Cylinder Nine",
+    "artist": "Chris Zabriskie",
+    "license": "CC-BY 4.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Chris_Zabriskie/2014010103336111/Chris_Zabriskie_-_Cylinders_-_09_-_Cylinder_Nine",
+    "artist_url": "http://freemusicarchive.org/music/Chris_Zabriskie/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 591:28",
+    "start": 0.0,
+    "seconds": 70
+  },
+  "credit": "🎵 Cylinder Nine - Chris Zabriskie (CC BY 4.0, 편집) http://freemusicarchive.org/music/Chris_Zabriskie/2014010103336111/Chris_Zabriskie_-_Cylinders_-_09_-_Cylinder_Nine"
+}
