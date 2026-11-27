@@ -1,0 +1,18 @@
+{
+  "mood": "calm",
+  "source": "library",
+  "track": {
+    "file": "calm/kai-engel-low-horizon.m4a",
+    "mood": "calm",
+    "title": "Low Horizon",
+    "artist": "Kai Engel",
+    "license": "CC-BY 4.0",
+    "attribution": true,
+    "url": "http://freemusicarchive.org/music/Kai_Engel/The_Scope/Kai_Engel_-_The_Scope_-_08_Low_Horizon",
+    "artist_url": "http://freemusicarchive.org/music/Kai_Engel/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 748:48",
+    "start": 42.0,
+    "seconds": 70
+  },
+  "credit": "🎵 Low Horizon - Kai Engel (CC BY 4.0, 편집) http://freemusicarchive.org/music/Kai_Engel/The_Scope/Kai_Engel_-_The_Scope_-_08_Low_Horizon"
+}
