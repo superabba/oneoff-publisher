@@ -1,0 +1,18 @@
+{
+  "mood": "calm",
+  "source": "library",
+  "track": {
+    "file": "calm/lee-rosevere-red-danube.m4a",
+    "mood": "calm",
+    "title": "Red Danube",
+    "artist": "Lee Rosevere",
+    "license": "CC0 1.0",
+    "attribution": false,
+    "url": "http://freemusicarchive.org/music/Lee_Rosevere/Red_Danube/LeeRosevere_RedDanube",
+    "artist_url": "http://freemusicarchive.org/music/Lee_Rosevere/",
+    "source": "FMA (Hugging Face benjamin-paine/free-music-archive-full) 218:35",
+    "start": 28.5,
+    "seconds": 70
+  },
+  "credit": ""
+}

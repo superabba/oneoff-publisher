@@ -1,0 +1,34 @@
+{
+  "fps": 30,
+  "duration": 50.23,
+  "narration": true,
+  "scenes": [
+    {
+      "start": 0.0,
+      "seconds": 7.42
+    },
+    {
+      "start": 7.4,
+      "seconds": 9.46
+    },
+    {
+      "start": 16.87,
+      "seconds": 7.6
+    },
+    {
+      "start": 24.47,
+      "seconds": 12.52
+    },
+    {
+      "start": 36.97,
+      "seconds": 13.26
+    }
+  ],
+  "frames": [
+    4.82,
+    13.55,
+    21.81,
+    32.6,
+    45.59
+  ]
+}
